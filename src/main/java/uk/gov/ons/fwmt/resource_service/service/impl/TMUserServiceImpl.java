@@ -1,10 +1,10 @@
-package uk.gov.ons.fwmt.staff_resource_service.service.impl;
+package uk.gov.ons.fwmt.resource_service.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import uk.gov.ons.fwmt.staff_resource_service.entity.TMUserEntity;
-import uk.gov.ons.fwmt.staff_resource_service.repo.TMUserRepo;
-import uk.gov.ons.fwmt.staff_resource_service.service.TMUserService;
+import uk.gov.ons.fwmt.resource_service.entity.TMUserEntity;
+import uk.gov.ons.fwmt.resource_service.repo.TMUserRepo;
+import uk.gov.ons.fwmt.resource_service.service.TMUserService;
 
 import java.util.List;
 

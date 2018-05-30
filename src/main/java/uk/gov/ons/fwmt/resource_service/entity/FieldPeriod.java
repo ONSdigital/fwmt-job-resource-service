@@ -1,4 +1,4 @@
-package uk.gov.ons.fwmt.staff_resource_service.entity;
+package uk.gov.ons.fwmt.resource_service.entity;
 
 import lombok.AccessLevel;
 import lombok.Data;

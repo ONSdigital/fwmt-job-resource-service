@@ -1,6 +1,6 @@
-package uk.gov.ons.fwmt.staff_resource_service.service;
+package uk.gov.ons.fwmt.resource_service.service;
 
-import uk.gov.ons.fwmt.staff_resource_service.entity.TMUserEntity;
+import uk.gov.ons.fwmt.resource_service.entity.TMUserEntity;
 
 import java.util.List;
 

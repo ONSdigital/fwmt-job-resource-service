@@ -1,4 +1,4 @@
-package uk.gov.ons.fwmt.staff_resource_service;
+package uk.gov.ons.fwmt.resource_service;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

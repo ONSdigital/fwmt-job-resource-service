@@ -1,10 +1,10 @@
-package uk.gov.ons.fwmt.staff_resource_service.service.impl;
+package uk.gov.ons.fwmt.resource_service.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import uk.gov.ons.fwmt.staff_resource_service.entity.TMJobEntity;
-import uk.gov.ons.fwmt.staff_resource_service.repo.TMJobRepo;
-import uk.gov.ons.fwmt.staff_resource_service.service.TMJobService;
+import uk.gov.ons.fwmt.resource_service.entity.TMJobEntity;
+import uk.gov.ons.fwmt.resource_service.repo.TMJobRepo;
+import uk.gov.ons.fwmt.resource_service.service.TMJobService;
 
 import java.util.List;
 
@@ -19,6 +19,8 @@ public class TMJobServiceImpl implements TMJobService {
         return tmJobRepo.findAll();
     }
 
+    public TMJobEntity findByJobId(String jobId) { return tmJobRepo.findByTmJobId(jobId); }
+
     @Override
     public TMJobEntity createJob(TMJobEntity job) {
         return tmJobRepo.save(job);
@@ -26,7 +28,12 @@ public class TMJobServiceImpl implements TMJobService {
 
     @Override
     public TMJobEntity updateJob(TMJobEntity job) {
-        return tmJobRepo.save(job);
+        TMJobEntity jobToUpdate = tmJobRepo.findByTmJobId(job.getTmJobId());
+        if(jobToUpdate == null){
+            return null;
+        }
+        jobToUpdate.setLastAuthNo(job.getLastAuthNo());
+        return tmJobRepo.save(jobToUpdate);
     }
 
     @Override
