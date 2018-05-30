@@ -26,7 +26,15 @@ public class TMUserServiceImpl implements TMUserService {
 
     @Override
     public TMUserEntity updateUser(TMUserEntity user) {
-        return tmUserRepo.save(user);
+        TMUserEntity userToUpdate = tmUserRepo.findByAuthNo(user.getAuthNo());
+        if(userToUpdate == null) {
+            return null;
+        }
+        userToUpdate.setActive(user.isActive());
+        userToUpdate.setAlternateAuthNo(user.getAlternateAuthNo());
+        userToUpdate.setAuthNo(user.getAuthNo());
+        userToUpdate.setTmUsername(user.getTmUsername());
+        return tmUserRepo.save(userToUpdate);
     }
 
     @Override

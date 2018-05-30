@@ -1,4 +1,4 @@
-package uk.gov.ons.fwmt.resource_service;
+package uk.gov.ons.fwmt.resource_service.mapper;
 
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.ConfigurableMapper;
