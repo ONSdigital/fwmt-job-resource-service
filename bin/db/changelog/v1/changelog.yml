@@ -1,0 +1,10 @@
+databaseChangeLog:
+ - changeSet:
+    id: v1
+    author: Gareth Turner
+    comment: set up tm_jobs and tm_users tables
+    changes:
+      - sqlFile:
+          path: 1_Setup_Tables.sql
+          relativeToChangelogFile: true
+          splitStatements: false
