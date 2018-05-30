@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import uk.gov.ons.fwmt.resource_service.data.dto.TMJobDTO;
+import uk.gov.ons.fwmt.resource_service.data.dto.JobDTO;
 import uk.gov.ons.fwmt.resource_service.entity.TMJobEntity;
 import uk.gov.ons.fwmt.resource_service.service.TMJobService;
 
@@ -14,7 +14,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-public class jobController {
+public class JobController {
 
     @Autowired
     TMJobService jobService;
@@ -23,32 +23,32 @@ public class jobController {
     MapperFacade mapperfacade;
 
     @RequestMapping(value = "/jobs", method = RequestMethod.GET, produces = "application/json")
-    public ResponseEntity<List<TMJobDTO>> getJobs() {
-        List<TMJobEntity> jobs = jobService.findJobs();
-        List<TMJobDTO> result = mapperfacade.mapAsList(jobs, TMJobDTO.class);
+    public ResponseEntity<List<JobDTO>> getJobs() {
+        final List<TMJobEntity> jobs = jobService.findJobs();
+        final List<JobDTO> result = mapperfacade.mapAsList(jobs, JobDTO.class);
         return ResponseEntity.ok(result);
     }
 
     @RequestMapping(value = "/jobs", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
-    public ResponseEntity createJob(@RequestBody TMJobDTO jobDTO) {
+    public ResponseEntity createJob(@RequestBody JobDTO jobDTO) {
         if (jobService.findByJobId(jobDTO.getTmJobId()) != null){
             log.info("job already exists");
             return new ResponseEntity(HttpStatus.CONFLICT);
         }
 
-        TMJobEntity job = jobService.createJob(mapperfacade.map(jobDTO, TMJobEntity.class));
+        final TMJobEntity job = jobService.createJob(mapperfacade.map(jobDTO, TMJobEntity.class));
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/jobs", method = RequestMethod.PUT, produces = "application/json", consumes = "application/json")
-    public ResponseEntity updateJob(@RequestBody TMJobDTO jobDTO) {
-        TMJobEntity job = jobService.updateJob(mapperfacade.map(jobDTO, TMJobEntity.class));
+    public ResponseEntity updateJob(@RequestBody JobDTO jobDTO) {
+        final TMJobEntity job = jobService.updateJob(mapperfacade.map(jobDTO, TMJobEntity.class));
         return ResponseEntity.ok(jobDTO);
     }
 
     @RequestMapping(value = "/jobs", method = RequestMethod.DELETE, produces = "application/json", consumes = "application/json")
-    public ResponseEntity<TMJobDTO> deleteJob(@RequestBody TMJobDTO jobDTO) {
-        TMJobEntity jobToDelete = jobService.findByJobId(jobDTO.getTmJobId());
+    public ResponseEntity<JobDTO> deleteJob(@RequestBody JobDTO jobDTO) {
+        final TMJobEntity jobToDelete = jobService.findByJobId(jobDTO.getTmJobId());
         if(jobToDelete == null) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
@@ -57,10 +57,10 @@ public class jobController {
     }
 
     @RequestMapping(value = "/jobs/{jobId}", method = RequestMethod.GET, produces = "application/json")
-    public ResponseEntity<TMJobDTO> getJobByJobId(@PathVariable("jobId") String jobId) {
-        TMJobEntity job = jobService.findByJobId(jobId);
+    public ResponseEntity<JobDTO> getJobByJobId(@PathVariable("jobId") String jobId) {
+        final TMJobEntity job = jobService.findByJobId(jobId);
         if (job == null) return new ResponseEntity(HttpStatus.NOT_FOUND);
-        TMJobDTO result = mapperfacade.map(job, TMJobDTO.class);
+        final JobDTO result = mapperfacade.map(job, JobDTO.class);
         return ResponseEntity.ok(result);
     }
 }
