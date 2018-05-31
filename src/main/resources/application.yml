@@ -1,0 +1,39 @@
+server:
+  port: 9095
+
+spring.http.multipart:
+  max-file-size: 12800MB
+  max-request-size: 12800MB
+
+spring.datasource:
+  url: jdbc:postgresql://localhost/postgres?currentSchema=gateway
+  driver-class-name: org.postgresql.Driver
+  continue-on-error: true
+  schema: classpath:/schema.sql
+  username: postgres
+  password: postgres
+
+management.endpoint.health.show-details: always
+
+liquibase:
+  url: jdbc:postgresql://localhost:5432/postgres?currentSchema=gateway
+  default-schema: gateway
+  user: postgres
+  password: postgres
+
+logging:
+  level:
+    root: WARN
+    uk.gov.ons.fwmt: DEBUG
+    org.springframework.security: ERROR
+    org.springframework.web: ERROR
+    org.hibernate: ERROR
+    org.apache.commons.dbcp2: ERROR
+  file: target/SpringErrors/spring.log
+  pattern:
+    console: "%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{15} - %msg%n"
+    file: "%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{15} - %msg%n"
+
+security.user:
+  name: user
+  password: password
