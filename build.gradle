@@ -17,10 +17,14 @@ mainClassName = 'uk.gov.ons.fwmt.resource_service.ApplicationConfig'
 
 description = "fwmt-resource-service"
 
-group = 'uk.gov.ons.fwmt'
-version = '1.0.0'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
+
+jar {
+	group = 'uk.gov.ons.fwmt'
+	baseName = 'fwmt-resource-service'
+	version = '1.0.0'
+}
 
 repositories {
 	mavenCentral()

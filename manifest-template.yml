@@ -1,0 +1,9 @@
+applications:
+- name: fwmt-resource-service-&{SPACE}
+  instances: 1
+  timeout: 180
+  host: fwmt-resource-service-&{SPACE}
+  memory: 1024M
+  path: build/libs/fwmt-resource-service.jar
+  services:
+  - fwmt-db
