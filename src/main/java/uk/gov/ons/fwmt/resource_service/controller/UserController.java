@@ -42,6 +42,9 @@ public class UserController {
     @RequestMapping(value = "/users", method = RequestMethod.PUT, produces = "application/json", consumes = "application/json")
     public ResponseEntity updateUser(@RequestBody UserDTO userDTO) {
         TMUserEntity user = userService.updateUser(mapperfacade.map(userDTO, TMUserEntity.class));
+        if (user == null) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
         return ResponseEntity.ok(userDTO);
     }
 

@@ -43,6 +43,9 @@ public class JobController {
     @RequestMapping(value = "/jobs", method = RequestMethod.PUT, produces = "application/json", consumes = "application/json")
     public ResponseEntity updateJob(@RequestBody JobDTO jobDTO) {
         final TMJobEntity job = jobService.updateJob(mapperfacade.map(jobDTO, TMJobEntity.class));
+        if (job == null) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
         return ResponseEntity.ok(jobDTO);
     }
 
