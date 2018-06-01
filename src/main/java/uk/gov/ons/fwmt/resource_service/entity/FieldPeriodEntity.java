@@ -15,7 +15,6 @@ import java.util.Date;
 public class FieldPeriodEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Setter(AccessLevel.PRIVATE)
     private Long id;
 
     @Column(nullable = false)

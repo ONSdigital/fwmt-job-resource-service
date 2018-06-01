@@ -26,12 +26,19 @@ public class FieldPeriodServiceImpl implements FieldPeriodService {
 
     @Override
     public FieldPeriodEntity updateFieldPeriod(FieldPeriodEntity fieldPeriod) {
-        return fieldPeriodRepo.save(fieldPeriod);
+        FieldPeriodEntity fieldPeriodToUpdate = fieldPeriodRepo.findByFieldPeriod(fieldPeriod.getFieldPeriod());
+        fieldPeriodToUpdate.setEndDate(fieldPeriod.getEndDate());
+        fieldPeriodToUpdate.setStartDate(fieldPeriod.getStartDate());
+        return fieldPeriodRepo.save(fieldPeriodToUpdate);
     }
 
     @Override
     public void deleteFieldPeriod(FieldPeriodEntity fieldPeriod) {
         fieldPeriodRepo.delete(fieldPeriod);
+    }
 
+    @Override
+    public FieldPeriodEntity findFieldPeriod(String fieldPeriod) {
+        return fieldPeriodRepo.findByFieldPeriod(fieldPeriod);
     }
 }
