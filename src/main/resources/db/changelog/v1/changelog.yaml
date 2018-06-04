@@ -125,3 +125,12 @@ databaseChangeLog:
           path: 14_Add_2018-19_Field_Periods.sql
           relativeToChangelogFile: true
           splitStatements: false
+ - changeSet:
+    id: v14
+    author: James Berry
+    comment: Added Extra FOM/IM LFS Field Periods
+    changes:
+      - sqlFile:
+          path: 15_Extra_Field_Periods.sql
+          relativeToChangelogFile: true
+          splitStatements: false

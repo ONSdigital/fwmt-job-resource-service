@@ -4,6 +4,6 @@ applications:
   timeout: 180
   host: fwmt-resource-service-&{SPACE}
   memory: 1024M
-  path: build/libs/fwmt-resource-service.jar
+  path: build/libs/fwmt-resource-service-&{VERSION}.jar
   services:
   - fwmt-db
