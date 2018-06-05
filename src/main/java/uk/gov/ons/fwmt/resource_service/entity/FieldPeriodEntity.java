@@ -1,30 +1,30 @@
 package uk.gov.ons.fwmt.resource_service.entity;
 
-import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
-@NoArgsConstructor
 @Entity
 @Table(name = "field_periods")
 public class FieldPeriodEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Setter(AccessLevel.PRIVATE)
     private Long id;
 
     @Column(nullable = false)
-    Date startDate;
+    @Convert(converter = Jsr310JpaConverters.LocalDateConverter.class)
+    private LocalDate startDate;
 
     @Column(nullable = false)
-    Date endDate;
+    @Convert(converter = Jsr310JpaConverters.LocalDateConverter.class)
+    private LocalDate endDate;
 
     @Column(nullable = false)
-    String fieldPeriod;
+    private String fieldPeriod;
 }
 

@@ -9,4 +9,6 @@ public interface FieldPeriodService {
     FieldPeriodEntity createFieldPeriod(FieldPeriodEntity fieldPeriod);
     FieldPeriodEntity updateFieldPeriod(FieldPeriodEntity fieldPeriod);
     void deleteFieldPeriod(FieldPeriodEntity fieldPeriod);
+    FieldPeriodEntity findFieldPeriod(String fieldPeriod);
+
 }
