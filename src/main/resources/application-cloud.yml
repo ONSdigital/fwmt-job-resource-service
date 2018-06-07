@@ -4,12 +4,13 @@ spring:
 
   jpa.properties.hibernate.default_schema: gateway
   datasource:
-    username: ${cloud.services.postgresql.connection.username}
-    password: ${cloud.services.postgresql.connection.password}
-    url: ${cloud.services.postgresql.connection.jdbcurl}&currentSchema=gateway
+    url: ${cloud.services.postgresql.connection.jdbcurl}
     driverClassName: org.postgresql.Driver
     continue-on-error: true
     schema: classpath:/schema-cloud.sql
+    username: ${cloud.services.postgresql.connection.username}
+    password: ${cloud.services.postgresql.connection.password}
+    platform: cloud
 
 liquibase:
   user: ${cloud.services.postgresql.connection.username}
