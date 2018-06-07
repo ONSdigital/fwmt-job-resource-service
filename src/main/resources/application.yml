@@ -8,8 +8,8 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost/postgres?currentSchema=gateway
     driver-class-name: org.postgresql.Driver
-    continue-on-error: true
     schema: classpath:/schema.sql
+    continue-on-error: false
     username: postgres
     password: postgres
   jackson:

@@ -3,13 +3,14 @@ spring:
     name: fwmt-resource-service
 
   jpa.properties.hibernate.default_schema: gateway
+  jpa.hibernate.ddl-auto: none
   datasource:
-    username: ${cloud.services.postgresql.connection.username}
-    password: ${cloud.services.postgresql.connection.password}
     url: ${cloud.services.postgresql.connection.jdbcurl}
     driverClassName: org.postgresql.Driver
-    continue-on-error: true
-    schema: classpath:/db/schema-cloud.sql
+    continue-on-error: false
+    schema: classpath:/schema-cloud.sql
+    username: ${cloud.services.postgresql.connection.username}
+    password: ${cloud.services.postgresql.connection.password}
 
 liquibase:
   user: ${cloud.services.postgresql.connection.username}
