@@ -9,7 +9,7 @@ spring:
     url: ${cloud.services.postgresql.connection.jdbcurl}
     driverClassName: org.postgresql.Driver
     continue-on-error: true
-    schema: classpath:/db/schema-cloud.sql
+    schema: classpath:/schema-cloud.sql
 
 liquibase:
   user: ${cloud.services.postgresql.connection.username}
