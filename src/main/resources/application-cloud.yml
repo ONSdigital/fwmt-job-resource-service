@@ -7,7 +7,7 @@ spring:
   datasource:
     url: ${cloud.services.postgresql.connection.jdbcurl}
     driverClassName: org.postgresql.Driver
-    continue-on-error: true
+    continue-on-error: false
     schema: classpath:/schema-cloud.sql
     username: ${cloud.services.postgresql.connection.username}
     password: ${cloud.services.postgresql.connection.password}
