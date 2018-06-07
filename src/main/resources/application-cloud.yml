@@ -2,7 +2,6 @@ spring:
   application:
     name: fwmt-resource-service
 
-  jpa.properties.hibernate.default_schema: gateway
   datasource:
     url: ${cloud.services.postgresql.connection.jdbcurl}
     driverClassName: org.postgresql.Driver
@@ -10,7 +9,6 @@ spring:
     schema: classpath:/schema-cloud.sql
     username: ${cloud.services.postgresql.connection.username}
     password: ${cloud.services.postgresql.connection.password}
-    platform: cloud
 
 liquibase:
   user: ${cloud.services.postgresql.connection.username}
