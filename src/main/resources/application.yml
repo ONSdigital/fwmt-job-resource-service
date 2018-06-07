@@ -1,4 +1,5 @@
 server:
+  contextPath: /resources
   port: 9095
 
 spring.http.multipart:
