@@ -1,10 +1,9 @@
----
 applications:
-- name: 'fwmt-resource-service-&{SPACE}'
+- name: '&{NAME}-&{SPACE}'
   instances: &{INSTANCES}
   timeout: 180
   memory: 1024M
-  path: 'build/libs/fwmt-resource-service.jar'
+  path: 'build/libs/&{NAME}.jar'
   services:
   - 'fwmt-db'
   routes:
