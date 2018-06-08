@@ -20,11 +20,7 @@ description = "fwmt-resource-service"
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-jar {
-	group = 'uk.gov.ons.fwmt'
-	baseName = 'fwmt-resource-service'
-	version = '1.0.0'
-}
+version = '1.0.0'
 
 repositories {
 	mavenCentral()
