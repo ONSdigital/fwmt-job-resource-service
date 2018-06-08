@@ -2,11 +2,11 @@ package uk.gov.ons.fwmt.resource_service.data.dto;
 
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 public class FieldPeriodDTO {
-    Date startDate;
-    Date endDate;
+    LocalDate startDate;
+    LocalDate endDate;
     String fieldPeriod;
 }
