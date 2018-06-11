@@ -1,3 +1,4 @@
+---
 applications:
 - name: '&{NAME}-&{SPACE}'
   instances: &{INSTANCES}
