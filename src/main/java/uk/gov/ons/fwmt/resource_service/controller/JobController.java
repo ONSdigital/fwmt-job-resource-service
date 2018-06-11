@@ -36,7 +36,7 @@ public class JobController {
             return new ResponseEntity(HttpStatus.CONFLICT);
         }
 
-        final TMJobEntity job = jobService.createJob(mapperfacade.map(jobDTO, TMJobEntity.class));
+        jobService.createJob(mapperfacade.map(jobDTO, TMJobEntity.class));
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
@@ -62,7 +62,9 @@ public class JobController {
     @RequestMapping(value = "/jobs/{jobId}", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<JobDTO> getJobByJobId(@PathVariable("jobId") String jobId) {
         final TMJobEntity job = jobService.findByJobId(jobId);
-        if (job == null) return new ResponseEntity(HttpStatus.NOT_FOUND);
+        if (job == null)  {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
         final JobDTO result = mapperfacade.map(job, JobDTO.class);
         return ResponseEntity.ok(result);
     }

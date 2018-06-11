@@ -43,7 +43,7 @@ public class FieldPeriodController {
             log.info("field period already exists");
             return new ResponseEntity(HttpStatus.CONFLICT);
         }
-        FieldPeriodEntity fieldPeriod = fieldPeriodService.createFieldPeriod(mapperfacade.map(fieldPeriodDTO, FieldPeriodEntity.class));
+        fieldPeriodService.createFieldPeriod(mapperfacade.map(fieldPeriodDTO, FieldPeriodEntity.class));
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
