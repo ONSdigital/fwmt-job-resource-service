@@ -21,8 +21,13 @@ import java.util.List;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserControllerTest {
@@ -40,7 +45,7 @@ public class UserControllerTest {
 
   private UserDTO userDTO = new UserDTO();
 
-  public static final String usersPostJson = "{ \"authNo\": \"1234\", \"tmUsername\": \"bla\", \"active\": true, \"alternateAuthNo\": \"7890\" }";
+  public static final String USER_JSON = "{ \"authNo\": \"1234\", \"tmUsername\": \"bla\", \"active\": true, \"alternateAuthNo\": \"7890\" }";
 
   @Before
   public void setUp() throws Exception {
@@ -71,37 +76,37 @@ public class UserControllerTest {
   @Test
   public void createUser() throws Exception {
     when(userService.findUserAuthNo(any())).thenReturn(null);
-    mockMvc.perform(post("/users").contentType(MediaType.APPLICATION_JSON).content(usersPostJson)).andExpect(status().isCreated());
+    mockMvc.perform(post("/users").contentType(MediaType.APPLICATION_JSON).content(USER_JSON)).andExpect(status().isCreated());
   }
 
   @Test
   public void createUserAuthNoAlreadyUsed() throws Exception {
     when(userService.findUserAuthNo(any())).thenReturn(new TMUserEntity());
-    mockMvc.perform(post("/users").contentType(MediaType.APPLICATION_JSON).content(usersPostJson)).andExpect(status().isConflict());
+    mockMvc.perform(post("/users").contentType(MediaType.APPLICATION_JSON).content(USER_JSON)).andExpect(status().isConflict());
   }
 
   @Test
   public void updateUserNotFound() throws Exception {
     when(userService.updateUser(any())).thenReturn(null);
-    mockMvc.perform(put("/users").contentType(MediaType.APPLICATION_JSON).content(usersPostJson)).andExpect(status().isNotFound());
+    mockMvc.perform(put("/users").contentType(MediaType.APPLICATION_JSON).content(USER_JSON)).andExpect(status().isNotFound());
   }
 
   @Test
   public void updateUser() throws Exception {
     when(userService.updateUser(any())).thenReturn(new TMUserEntity());
-    mockMvc.perform(put("/users").contentType(MediaType.APPLICATION_JSON).content(usersPostJson)).andExpect(status().isOk());
+    mockMvc.perform(put("/users").contentType(MediaType.APPLICATION_JSON).content(USER_JSON)).andExpect(status().isOk());
   }
 
   @Test
   public void deleteUser() throws Exception {
     when(userService.findUserAuthNo(any())).thenReturn(new TMUserEntity());
-    mockMvc.perform(delete("/users").contentType(MediaType.APPLICATION_JSON).content(usersPostJson)).andExpect(status().isOk());
+    mockMvc.perform(delete("/users").contentType(MediaType.APPLICATION_JSON).content(USER_JSON)).andExpect(status().isOk());
   }
 
   @Test
   public void deleteUserNotExist() throws Exception {
     when(userService.findUserAuthNo(any())).thenReturn(null);
-    mockMvc.perform(delete("/users").contentType(MediaType.APPLICATION_JSON).content(usersPostJson)).andExpect(status().isNotFound());
+    mockMvc.perform(delete("/users").contentType(MediaType.APPLICATION_JSON).content(USER_JSON)).andExpect(status().isNotFound());
   }
 
   @Test

@@ -32,6 +32,7 @@ public class FieldPeriodController {
     @RequestMapping(value = "/fieldperiods/{fieldPeriod}", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<FieldPeriodDTO> getFieldPeriod(@PathVariable("fieldPeriod") String fieldPeriod) {
         final FieldPeriodEntity fieldPeriodEntity = fieldPeriodService.findFieldPeriod(fieldPeriod);
+        if (fieldPeriodEntity == null) return new ResponseEntity(HttpStatus.NOT_FOUND);
         final FieldPeriodDTO result = mapperfacade.map(fieldPeriodEntity, FieldPeriodDTO.class);
         return ResponseEntity.ok(result);
     }

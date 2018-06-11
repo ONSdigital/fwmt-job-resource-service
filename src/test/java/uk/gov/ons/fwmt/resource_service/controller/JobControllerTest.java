@@ -20,11 +20,14 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Matchers.any;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.mockito.Mockito.when;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -40,14 +43,13 @@ public class JobControllerTest {
 
   private JobDTO jobDTO = new JobDTO();
 
-  public static final String jobPostJson = "{ \"tmJobId\": \"123456789\", \"lastAuthNo\": \"1276\" }";
+  public static final String JOB_JSON = "{ \"tmJobId\": \"123456789\", \"lastAuthNo\": \"1276\" }";
 
   @Before
   public void setUp() throws Exception {
     this.mockMvc = MockMvcBuilders.standaloneSetup(jobController).build();
     MockitoAnnotations.initMocks(this);
     jobDTO = JobDTO.builder().lastAuthNo("1234").tmJobId("4567").build();
-
   }
 
   @Test
@@ -72,37 +74,37 @@ public class JobControllerTest {
   @Test
   public void createJob() throws Exception {
     when(jobService.findByJobId(any())).thenReturn(null);
-    mockMvc.perform(post("/jobs").contentType(MediaType.APPLICATION_JSON).content(jobPostJson)).andExpect(status().isCreated());
+    mockMvc.perform(post("/jobs").contentType(MediaType.APPLICATION_JSON).content(JOB_JSON)).andExpect(status().isCreated());
   }
 
   @Test
   public void createJobIdAlreadyUsed() throws Exception {
     when(jobService.findByJobId(any())).thenReturn(new TMJobEntity());
-    mockMvc.perform(post("/jobs").contentType(MediaType.APPLICATION_JSON).content(jobPostJson)).andExpect(status().isConflict());
+    mockMvc.perform(post("/jobs").contentType(MediaType.APPLICATION_JSON).content(JOB_JSON)).andExpect(status().isConflict());
   }
 
   @Test
   public void updateJobNotFound() throws Exception {
     when(jobService.updateJob(any())).thenReturn(null);
-    mockMvc.perform(put("/jobs").contentType(MediaType.APPLICATION_JSON).content(jobPostJson)).andExpect(status().isNotFound());
+    mockMvc.perform(put("/jobs").contentType(MediaType.APPLICATION_JSON).content(JOB_JSON)).andExpect(status().isNotFound());
   }
 
   @Test
   public void updateJob() throws Exception {
     when(jobService.updateJob(any())).thenReturn(new TMJobEntity());
-    mockMvc.perform(put("/jobs").contentType(MediaType.APPLICATION_JSON).content(jobPostJson)).andExpect(status().isOk());
+    mockMvc.perform(put("/jobs").contentType(MediaType.APPLICATION_JSON).content(JOB_JSON)).andExpect(status().isOk());
   }
 
   @Test
   public void deleteJob() throws Exception {
     when(jobService.findByJobId(any())).thenReturn(new TMJobEntity());
-    mockMvc.perform(delete("/jobs").contentType(MediaType.APPLICATION_JSON).content(jobPostJson)).andExpect(status().isOk());
+    mockMvc.perform(delete("/jobs").contentType(MediaType.APPLICATION_JSON).content(JOB_JSON)).andExpect(status().isOk());
   }
 
   @Test
   public void deleteJobNotExist() throws Exception {
     when(jobService.findByJobId(any())).thenReturn(null);
-    mockMvc.perform(delete("/jobs").contentType(MediaType.APPLICATION_JSON).content(jobPostJson)).andExpect(status().isNotFound());
+    mockMvc.perform(delete("/jobs").contentType(MediaType.APPLICATION_JSON).content(JOB_JSON)).andExpect(status().isNotFound());
   }
 
   @Test
