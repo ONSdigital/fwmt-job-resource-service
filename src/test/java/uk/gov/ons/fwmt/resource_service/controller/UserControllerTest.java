@@ -70,6 +70,7 @@ public class UserControllerTest {
 
   @Test
   public void createUser() throws Exception {
+    when(userService.findUserAuthNo(any())).thenReturn(null);
     mockMvc.perform(post("/users").contentType(MediaType.APPLICATION_JSON).content(usersPostJson)).andExpect(status().isCreated());
   }
 
@@ -81,6 +82,7 @@ public class UserControllerTest {
 
   @Test
   public void updateUserNotFound() throws Exception {
+    when(userService.updateUser(any())).thenReturn(null);
     mockMvc.perform(put("/users").contentType(MediaType.APPLICATION_JSON).content(usersPostJson)).andExpect(status().isNotFound());
   }
 
@@ -98,6 +100,7 @@ public class UserControllerTest {
 
   @Test
   public void deleteUserNotExist() throws Exception {
+    when(userService.findUserAuthNo(any())).thenReturn(null);
     mockMvc.perform(delete("/users").contentType(MediaType.APPLICATION_JSON).content(usersPostJson)).andExpect(status().isNotFound());
   }
 
@@ -110,10 +113,22 @@ public class UserControllerTest {
   }
 
   @Test
+  public void getUserByAuthNoNotFound() throws Exception {
+    when(userService.findUserAuthNo("1234")).thenReturn(null);
+    mockMvc.perform(get("/users/auth/1234")).andExpect(status().isNotFound());
+  }
+
+  @Test
   public void getUserByAltAuthNo() throws Exception {
     when(userService.findUserAlternateAuthNo("1234")).thenReturn(new TMUserEntity());
     when(mapperFacade.map(any(), any())).thenReturn(userDTO);
     mockMvc.perform(get("/users/alternative/1234")).andExpect(status().isOk()).andExpect(jsonPath("$.authNo", is("1234")))
         .andExpect(jsonPath("$.tmUsername", is("bla"))).andExpect(jsonPath("$.active", is(true)));
+  }
+
+  @Test
+  public void getUserByAltAuthNoNotFound() throws Exception {
+    when(userService.findUserAlternateAuthNo("1234")).thenReturn(null);
+    mockMvc.perform(get("/users/alternative/1234")).andExpect(status().isNotFound());
   }
 }
