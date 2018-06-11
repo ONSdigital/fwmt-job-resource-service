@@ -35,7 +35,7 @@ public class UserController {
             return new ResponseEntity(HttpStatus.CONFLICT);
         }
 
-        TMUserEntity user = userService.createUser(mapperfacade.map(userDTO, TMUserEntity.class));
+        userService.createUser(mapperfacade.map(userDTO, TMUserEntity.class));
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
