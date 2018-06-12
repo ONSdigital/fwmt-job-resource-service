@@ -1,11 +1,4 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.13.RELEASE")
-    }
-}
+import org.apache.tools.ant.filters.ReplaceTokens
 
 apply plugin: 'java'
 apply plugin: 'idea'
@@ -22,6 +15,16 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 version = '1.0.0'
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.13.RELEASE")
+    }
+}
+
 
 repositories {
     mavenCentral()
@@ -49,11 +52,22 @@ dependencies {
     }
 }
 
+processResources {
+    filter ReplaceTokens, tokens: [
+            "project.artifactId": "name",
+            "project.version"   : "version",
+            "scm.url"           : "url",
+            "buildNumber"       : "buildnumber",
+            "scmBranch"         : "branch",
+            "timestamp"         : "timestamp",
+    ]
+}
+
 jacocoTestReport {
-	reports {
-		xml.enabled true
-		html.enabled false
-	}
+    reports {
+        xml.enabled true
+        html.enabled false
+    }
 }
 
 check.dependsOn jacocoTestReport

@@ -27,6 +27,9 @@ public class FieldPeriodServiceImpl implements FieldPeriodService {
   @Override
   public FieldPeriodEntity updateFieldPeriod(FieldPeriodEntity fieldPeriod) {
     FieldPeriodEntity fieldPeriodToUpdate = fieldPeriodRepo.findByFieldPeriod(fieldPeriod.getFieldPeriod());
+    if (fieldPeriodToUpdate == null) {
+      return null;
+    }
     fieldPeriodToUpdate.setEndDate(fieldPeriod.getEndDate());
     fieldPeriodToUpdate.setStartDate(fieldPeriod.getStartDate());
     return fieldPeriodRepo.save(fieldPeriodToUpdate);
