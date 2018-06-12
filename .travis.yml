@@ -3,16 +3,10 @@ language: java
 jdk: oraclejdk8
 
 services:
-  - docker
+  - postgresql
 
-before_install:
-  - docker pull postgres:latest
-  - docker run -p 127.0.0.1:5432:5432 postgres
-  - docker ps
-
-after_script:
-  - docker stop $(docker ps -a -q)
-  - docker rm $(docker ps -a -q)
+addons:
+  postgresql: "9.6"
 
 script:
   - "./gradlew check --info"
