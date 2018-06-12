@@ -11,33 +11,35 @@ import java.util.List;
 @Service
 public class TMJobServiceImpl implements TMJobService {
 
-    @Autowired
-    TMJobRepo tmJobRepo;
+  @Autowired
+  TMJobRepo tmJobRepo;
 
-    @Override
-    public List<TMJobEntity> findJobs() {
-        return tmJobRepo.findAll();
+  @Override
+  public List<TMJobEntity> findJobs() {
+    return tmJobRepo.findAll();
+  }
+
+  public TMJobEntity findByJobId(String jobId) {
+    return tmJobRepo.findByTmJobId(jobId);
+  }
+
+  @Override
+  public TMJobEntity createJob(TMJobEntity job) {
+    return tmJobRepo.save(job);
+  }
+
+  @Override
+  public TMJobEntity updateJob(TMJobEntity job) {
+    TMJobEntity jobToUpdate = tmJobRepo.findByTmJobId(job.getTmJobId());
+    if (jobToUpdate == null) {
+      return null;
     }
+    jobToUpdate.setLastAuthNo(job.getLastAuthNo());
+    return tmJobRepo.save(jobToUpdate);
+  }
 
-    public TMJobEntity findByJobId(String jobId) { return tmJobRepo.findByTmJobId(jobId); }
-
-    @Override
-    public TMJobEntity createJob(TMJobEntity job) {
-        return tmJobRepo.save(job);
-    }
-
-    @Override
-    public TMJobEntity updateJob(TMJobEntity job) {
-        TMJobEntity jobToUpdate = tmJobRepo.findByTmJobId(job.getTmJobId());
-        if(jobToUpdate == null){
-            return null;
-        }
-        jobToUpdate.setLastAuthNo(job.getLastAuthNo());
-        return tmJobRepo.save(jobToUpdate);
-    }
-
-    @Override
-    public void deleteJob(TMJobEntity job) {
-        tmJobRepo.delete(job);
-    }
+  @Override
+  public void deleteJob(TMJobEntity job) {
+    tmJobRepo.delete(job);
+  }
 }

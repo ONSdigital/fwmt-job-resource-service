@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class JobDTO {
-    private String tmJobId;
-    private String lastAuthNo;
+  private String tmJobId;
+  private String lastAuthNo;
 }

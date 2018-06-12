@@ -14,59 +14,64 @@ import java.util.List;
 
 @Slf4j
 @RestController
+@RequestMapping("/fieldPeriods")
 public class FieldPeriodController {
 
-    @Autowired
-    FieldPeriodService fieldPeriodService;
+  @Autowired
+  FieldPeriodService fieldPeriodService;
 
-    @Autowired
-    MapperFacade mapperfacade;
+  @Autowired
+  MapperFacade mapperFacade;
 
-    @RequestMapping(value = "/fieldperiods", method = RequestMethod.GET, produces = "application/json")
-    public ResponseEntity<List<FieldPeriodDTO>> getAllFieldPeriods() {
-        final List<FieldPeriodEntity> fieldPeriods = fieldPeriodService.findFieldPeriods();
-        final List<FieldPeriodDTO> result = mapperfacade.mapAsList(fieldPeriods, FieldPeriodDTO.class);
-        return ResponseEntity.ok(result);
+  @GetMapping(produces = "application/json")
+  public ResponseEntity<List<FieldPeriodDTO>> getAllFieldPeriods() {
+    final List<FieldPeriodEntity> fieldPeriods = fieldPeriodService.findFieldPeriods();
+    final List<FieldPeriodDTO> result = mapperFacade.mapAsList(fieldPeriods, FieldPeriodDTO.class);
+    return ResponseEntity.ok(result);
+  }
+
+  @GetMapping(value = "/{fieldPeriod}", produces = "application/json")
+  public ResponseEntity<FieldPeriodDTO> getFieldPeriod(@PathVariable("fieldPeriod") String fieldPeriod) {
+    final FieldPeriodEntity fieldPeriodEntity = fieldPeriodService.findFieldPeriod(fieldPeriod);
+    if (fieldPeriodEntity == null) {
+      log.warn("field period not found during fetch");
+      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+    final FieldPeriodDTO result = mapperFacade.map(fieldPeriodEntity, FieldPeriodDTO.class);
+    return ResponseEntity.ok(result);
+  }
 
-    @RequestMapping(value = "/fieldperiods/{fieldPeriod}", method = RequestMethod.GET, produces = "application/json")
-    public ResponseEntity<FieldPeriodDTO> getFieldPeriod(@PathVariable("fieldPeriod") String fieldPeriod) {
-        final FieldPeriodEntity fieldPeriodEntity = fieldPeriodService.findFieldPeriod(fieldPeriod);
-        if (fieldPeriodEntity == null) return new ResponseEntity(HttpStatus.NOT_FOUND);
-        final FieldPeriodDTO result = mapperfacade.map(fieldPeriodEntity, FieldPeriodDTO.class);
-        return ResponseEntity.ok(result);
+  @PostMapping(consumes = "application/json", produces = "application/json")
+  public ResponseEntity createFieldPeriod(@RequestBody FieldPeriodDTO fieldPeriodDTO) {
+    if (fieldPeriodService.findFieldPeriod(fieldPeriodDTO.getFieldPeriod()) != null) {
+      log.warn("field period already exists");
+      return new ResponseEntity(HttpStatus.CONFLICT);
     }
+    fieldPeriodService.createFieldPeriod(mapperFacade.map(fieldPeriodDTO, FieldPeriodEntity.class));
+    return new ResponseEntity(HttpStatus.CREATED);
+  }
 
-    @RequestMapping(value = "/fieldperiods", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
-    public ResponseEntity createFieldPeriod(@RequestBody FieldPeriodDTO fieldPeriodDTO) {
-        if (fieldPeriodService.findFieldPeriod(fieldPeriodDTO.getFieldPeriod()) != null){
-            log.info("field period already exists");
-            return new ResponseEntity(HttpStatus.CONFLICT);
-        }
-        fieldPeriodService.createFieldPeriod(mapperfacade.map(fieldPeriodDTO, FieldPeriodEntity.class));
-        return new ResponseEntity(HttpStatus.CREATED);
+  @PutMapping(consumes = "application/json", produces = "application/json")
+  public ResponseEntity<FieldPeriodDTO> updateFieldPeriod(@RequestBody FieldPeriodDTO fieldPeriodDTO) {
+    FieldPeriodEntity fieldPeriodEntity = fieldPeriodService
+        .updateFieldPeriod(mapperFacade.map(fieldPeriodDTO, FieldPeriodEntity.class));
+    if (fieldPeriodEntity == null) {
+      log.warn("field period not found during update");
+      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+    return ResponseEntity.ok(fieldPeriodDTO);
+  }
 
-    @RequestMapping(value = "/fieldperiods", method = RequestMethod.PUT, produces = "application/json", consumes = "application/json")
-    public ResponseEntity updateFieldPeriod(@RequestBody FieldPeriodDTO fieldPeriodDTO) {
-        FieldPeriodEntity fieldPeriodEntity = fieldPeriodService.updateFieldPeriod(mapperfacade.map(fieldPeriodDTO, FieldPeriodEntity.class));
-        if (fieldPeriodEntity == null) {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
-        }
-        return ResponseEntity.ok(fieldPeriodDTO);
-
+  @DeleteMapping(consumes = "application/json", produces = "application/json")
+  public ResponseEntity<FieldPeriodDTO> deleteFieldPeriod(@RequestBody FieldPeriodDTO fieldPeriodDTO) {
+    final FieldPeriodEntity fieldPeriodToDelete = fieldPeriodService.findFieldPeriod(fieldPeriodDTO.getFieldPeriod());
+    if (fieldPeriodToDelete == null) {
+      log.warn("field period not found during delete");
+      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+    fieldPeriodService.deleteFieldPeriod(fieldPeriodToDelete);
+    return ResponseEntity.ok(fieldPeriodDTO);
 
-    @RequestMapping(value = "/fieldperiods", method = RequestMethod.DELETE, produces = "application/json", consumes = "application/json")
-    public ResponseEntity deleteFieldPeriod(@RequestBody FieldPeriodDTO fieldPeriodDTO) {
-        final FieldPeriodEntity fieldPeriodToDelete = fieldPeriodService.findFieldPeriod(fieldPeriodDTO.getFieldPeriod());
-        if(fieldPeriodToDelete == null) {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
-        }
-        fieldPeriodService.deleteFieldPeriod(fieldPeriodToDelete);
-        return ResponseEntity.ok(fieldPeriodDTO);
-
-    }
-
+  }
 
 }

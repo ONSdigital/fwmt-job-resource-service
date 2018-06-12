@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDTO {
-    public String authNo;
-    public String tmUsername;
-    public boolean active;
-    public String alternateAuthNo;
+  public String authNo;
+  public String tmUsername;
+  public boolean active;
+  public String alternateAuthNo;
 }

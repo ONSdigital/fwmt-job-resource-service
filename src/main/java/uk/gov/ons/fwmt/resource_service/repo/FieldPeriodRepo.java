@@ -6,6 +6,6 @@ import uk.gov.ons.fwmt.resource_service.entity.FieldPeriodEntity;
 
 @Repository
 public interface FieldPeriodRepo extends JpaRepository<FieldPeriodEntity, Long> {
-    FieldPeriodEntity findByFieldPeriod(String fieldPeriod);
+  FieldPeriodEntity findByFieldPeriod(String fieldPeriod);
 }
 

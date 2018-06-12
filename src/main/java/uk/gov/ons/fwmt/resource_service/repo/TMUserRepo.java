@@ -6,6 +6,7 @@ import uk.gov.ons.fwmt.resource_service.entity.TMUserEntity;
 
 @Repository
 public interface TMUserRepo extends JpaRepository<TMUserEntity, Long> {
-    TMUserEntity findByAuthNo(String authNo);
-    TMUserEntity findByAlternateAuthNo(String authNo);
+  TMUserEntity findByAuthNo(String authNo);
+
+  TMUserEntity findByAlternateAuthNo(String authNo);
 }
