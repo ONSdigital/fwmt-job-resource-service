@@ -11,44 +11,44 @@ import java.util.List;
 @Service
 public class TMUserServiceImpl implements TMUserService {
 
-    @Autowired
-    TMUserRepo tmUserRepo;
+  @Autowired
+  TMUserRepo tmUserRepo;
 
-    @Override
-    public List<TMUserEntity> findUsers() {
-        return tmUserRepo.findAll();
-    }
+  @Override
+  public List<TMUserEntity> findUsers() {
+    return tmUserRepo.findAll();
+  }
 
-    @Override
-    public TMUserEntity createUser(TMUserEntity user) {
-        return tmUserRepo.save(user);
-    }
+  @Override
+  public TMUserEntity createUser(TMUserEntity user) {
+    return tmUserRepo.save(user);
+  }
 
-    @Override
-    public TMUserEntity updateUser(TMUserEntity user) {
-        TMUserEntity userToUpdate = tmUserRepo.findByAuthNo(user.getAuthNo());
-        if(userToUpdate == null) {
-            return null;
-        }
-        userToUpdate.setActive(user.isActive());
-        userToUpdate.setAlternateAuthNo(user.getAlternateAuthNo());
-        userToUpdate.setAuthNo(user.getAuthNo());
-        userToUpdate.setTmUsername(user.getTmUsername());
-        return tmUserRepo.save(userToUpdate);
+  @Override
+  public TMUserEntity updateUser(TMUserEntity user) {
+    TMUserEntity userToUpdate = tmUserRepo.findByAuthNo(user.getAuthNo());
+    if (userToUpdate == null) {
+      return null;
     }
+    userToUpdate.setActive(user.isActive());
+    userToUpdate.setAlternateAuthNo(user.getAlternateAuthNo());
+    userToUpdate.setAuthNo(user.getAuthNo());
+    userToUpdate.setTmUsername(user.getTmUsername());
+    return tmUserRepo.save(userToUpdate);
+  }
 
-    @Override
-    public void deleteUser(TMUserEntity user) {
-        tmUserRepo.delete(user);
-    }
+  @Override
+  public void deleteUser(TMUserEntity user) {
+    tmUserRepo.delete(user);
+  }
 
-    @Override
-    public TMUserEntity findUserAuthNo(String authNo) {
-        return tmUserRepo.findByAuthNo(authNo);
-    }
+  @Override
+  public TMUserEntity findUserAuthNo(String authNo) {
+    return tmUserRepo.findByAuthNo(authNo);
+  }
 
-    @Override
-    public TMUserEntity findUserAlternateAuthNo(String authNo) {
-        return tmUserRepo.findByAlternateAuthNo(authNo);
-    }
+  @Override
+  public TMUserEntity findUserAlternateAuthNo(String authNo) {
+    return tmUserRepo.findByAlternateAuthNo(authNo);
+  }
 }

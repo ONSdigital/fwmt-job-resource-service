@@ -8,13 +8,13 @@ import javax.persistence.*;
 @Entity
 @Table(name = "tm_jobs")
 public class TMJobEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @Column(nullable = false)
-    private String tmJobId;
+  @Column(nullable = false)
+  private String tmJobId;
 
-    @Column(nullable = false)
-    private String lastAuthNo;
+  @Column(nullable = false)
+  private String lastAuthNo;
 }

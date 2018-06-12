@@ -6,5 +6,5 @@ import uk.gov.ons.fwmt.resource_service.entity.TMJobEntity;
 
 @Repository
 public interface TMJobRepo extends JpaRepository<TMJobEntity, Long> {
-    TMJobEntity findByTmJobId(String tmJobId);
+  TMJobEntity findByTmJobId(String tmJobId);
 }

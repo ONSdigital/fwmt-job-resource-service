@@ -14,70 +14,71 @@ import java.util.List;
 
 @Slf4j
 @RestController
+@RequestMapping("/users")
 public class UserController {
-    @Autowired
-    TMUserService userService;
+  @Autowired
+  TMUserService userService;
 
-    @Autowired
-    MapperFacade mapperfacade;
+  @Autowired
+  MapperFacade mapperfacade;
 
-    @RequestMapping(value = "/users", method = RequestMethod.GET, produces = "application/json")
-    public ResponseEntity<List<UserDTO>> getUsers() {
-        List<TMUserEntity> users = userService.findUsers();
-        List<UserDTO> result = mapperfacade.mapAsList(users, UserDTO.class);
-        return ResponseEntity.ok(result);
+  @GetMapping(produces = "application/json")
+  public ResponseEntity<List<UserDTO>> getUsers() {
+    List<TMUserEntity> users = userService.findUsers();
+    List<UserDTO> result = mapperfacade.mapAsList(users, UserDTO.class);
+    return ResponseEntity.ok(result);
+  }
+
+  @PostMapping(consumes = "application/json", produces = "application/json")
+  public ResponseEntity createUser(@RequestBody UserDTO userDTO) {
+    if (userService.findUserAuthNo(userDTO.getAuthNo()) != null) {
+      log.info("user already exists");
+      return new ResponseEntity(HttpStatus.CONFLICT);
     }
 
-    @RequestMapping(value = "/users", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
-    public ResponseEntity createUser(@RequestBody UserDTO userDTO) {
-        if (userService.findUserAuthNo(userDTO.getAuthNo()) != null){
-            log.info("user already exists");
-            return new ResponseEntity(HttpStatus.CONFLICT);
-        }
+    userService.createUser(mapperfacade.map(userDTO, TMUserEntity.class));
+    return new ResponseEntity(HttpStatus.CREATED);
+  }
 
-        userService.createUser(mapperfacade.map(userDTO, TMUserEntity.class));
-        return new ResponseEntity(HttpStatus.CREATED);
+  @PutMapping(consumes = "application/json", produces = "application/json")
+  public ResponseEntity updateUser(@RequestBody UserDTO userDTO) {
+    TMUserEntity user = userService.updateUser(mapperfacade.map(userDTO, TMUserEntity.class));
+    if (user == null) {
+      return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
+    return ResponseEntity.ok(userDTO);
+  }
 
-    @RequestMapping(value = "/users", method = RequestMethod.PUT, produces = "application/json", consumes = "application/json")
-    public ResponseEntity updateUser(@RequestBody UserDTO userDTO) {
-        TMUserEntity user = userService.updateUser(mapperfacade.map(userDTO, TMUserEntity.class));
-        if (user == null) {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
-        }
-        return ResponseEntity.ok(userDTO);
+  @DeleteMapping(consumes = "application/json", produces = "application/json")
+  public ResponseEntity<UserDTO> deleteUser(@RequestBody UserDTO userDTO) {
+    TMUserEntity userToDelete = userService.findUserAuthNo(userDTO.getAuthNo());
+    if (userToDelete == null) {
+      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+    userService.deleteUser(userToDelete);
+    return ResponseEntity.ok(userDTO);
+  }
 
-    @RequestMapping(value = "/users", method = RequestMethod.DELETE, produces = "application/json", consumes = "application/json")
-    public ResponseEntity<UserDTO> deleteUser(@RequestBody UserDTO userDTO) {
-        TMUserEntity userToDelete = userService.findUserAuthNo(userDTO.getAuthNo());
-        if(userToDelete == null) {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
-        }
-        userService.deleteUser(userToDelete);
-        return ResponseEntity.ok(userDTO);
+  @GetMapping(value = "/auth/{authNo}", produces = "application/json")
+  public ResponseEntity<UserDTO> getUserByAuthNo(@PathVariable("authNo") String authNo) {
+    TMUserEntity user = userService.findUserAuthNo(authNo);
+    if (user == null) {
+      log.warn("user not found by authNo");
+      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+    UserDTO result = mapperfacade.map(user, UserDTO.class);
+    return ResponseEntity.ok(result);
+  }
 
-    @RequestMapping(value = "/users/auth/{authNo}", method = RequestMethod.GET, produces = "application/json")
-    public ResponseEntity<UserDTO> getUserByAuthNo(@PathVariable("authNo") String authNo) {
-        TMUserEntity user = userService.findUserAuthNo(authNo);
-        if (user == null) {
-            log.info("user not found");
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
-        }
-        UserDTO result = mapperfacade.map(user, UserDTO.class);
-        return ResponseEntity.ok(result);
+  @GetMapping(value = "/alternative/{altAuthNo}", produces = "application/json")
+  public ResponseEntity<UserDTO> getUserByAltAuthNo(@PathVariable("altAuthNo") String altAuthNo) {
+    TMUserEntity user = userService.findUserAlternateAuthNo(altAuthNo);
+    if (user == null) {
+      log.warn("user not found by alternate authNo");
+      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-
-    @RequestMapping(value = "/users/alternative/{altAuthNo}", method = RequestMethod.GET, produces = "application/json")
-    public ResponseEntity<UserDTO> getUserByAltAuthNo(@PathVariable("altAuthNo") String altAuthNo) {
-        TMUserEntity user = userService.findUserAlternateAuthNo(altAuthNo);
-        if (user == null) {
-            log.info("user not found");
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
-        }
-        UserDTO result = mapperfacade.map(user, UserDTO.class);
-        return ResponseEntity.ok(result);
-    }
+    UserDTO result = mapperfacade.map(user, UserDTO.class);
+    return ResponseEntity.ok(result);
+  }
 
 }
