@@ -26,7 +26,7 @@ public class FieldPeriodIT {
 
   @Test
   public void getFieldPeriodIT() throws Exception {
-    mockMvc.perform(get("/fieldperiods/81A").with(httpBasic("user", "password"))).andExpect(status().isOk())
+    mockMvc.perform(get("/fieldPeriods/81A").with(httpBasic("user", "password"))).andExpect(status().isOk())
         .andExpect(jsonPath("$.fieldPeriod", is("81A")))
         .andExpect(jsonPath("$.endDate", is("2018-01-20")))
         .andExpect(jsonPath("$.startDate", is("2018-01-08")));
@@ -34,6 +34,6 @@ public class FieldPeriodIT {
 
   @Test
   public void basicAuthFailureIT() throws Exception {
-    mockMvc.perform(get("/fieldperiods/81A")).andExpect(status().isUnauthorized());
+    mockMvc.perform(get("/fieldPeriods/81A")).andExpect(status().isUnauthorized());
   }
 }
