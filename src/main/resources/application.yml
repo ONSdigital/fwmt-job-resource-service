@@ -8,9 +8,11 @@ info:
 
 server:
   contextPath: /resources
-  port: 9095
+  port: 9093
 
 spring:
+  application:
+    name: fwmt-resource-service
   http.multipart:
     max-file-size: 12800MB
     max-request-size: 12800MB
@@ -25,13 +27,13 @@ spring:
     serialization:
       WRITE_DATES_AS_TIMESTAMPS: false
 
-management.endpoint.health.show-details: always
-
 liquibase:
   url: jdbc:postgresql://localhost:5432/postgres?currentSchema=gateway
   default-schema: gateway
   user: postgres
   password: postgres
+
+management.endpoint.health.show-details: always
 
 logging:
   level:
@@ -47,5 +49,27 @@ logging:
     file: "%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{15} - %msg%n"
 
 security.user:
-  name: user
-  password: password
+  name: "user"
+  password: "password"
+
+service:
+  resource:
+    username: "user"
+    password: "password"
+    baseUrl: "http://localhost:9093/resources"
+    operation:
+      users:
+        find:
+          path: "/users/auth/{authNo}"
+        findAlt:
+          path: "/users/alternative/{altAuthNo}"
+      jobs:
+        find:
+          path: "/jobs/{authNo}"
+        create:
+          path: "/jobs/"
+        update:
+          path: "/jobs/"
+      fieldPeriods:
+        find:
+          path: "/fieldPeriods/{fieldPeriod}"
