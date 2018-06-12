@@ -27,6 +27,23 @@ repositories {
     mavenCentral()
 }
 
+sourceSets {
+    integrationTest {
+        java {
+            compileClasspath += main.output
+            runtimeClasspath += main.output
+            srcDir file('src/integration-test/java')
+        }
+        resources.srcDir file('src/integration-test/resources')
+    }
+}
+
+configurations {
+    integrationTestCompile.extendsFrom testCompile
+    integrationTestRuntime.extendsFrom testRuntime
+}
+
+
 dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '1.5.13.RELEASE'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '1.5.13.RELEASE'
@@ -48,6 +65,7 @@ dependencies {
         exclude(module: 'android-json')
     }
     testCompile 'org.springframework.security:spring-security-test:4.2.3.RELEASE'
+    integrationTestCompile 'org.assertj:assertj-core:3.0.0'
 }
 
 jacocoTestReport {
@@ -72,3 +90,11 @@ tasks.withType(FindBugs) {
         html.enabled = true
     }
 }
+
+task integrationTest(type: Test) {
+    testClassesDirs = sourceSets.integrationTest.output.classesDirs
+    classpath = sourceSets.integrationTest.runtimeClasspath
+    outputs.upToDateWhen { false }
+}
+check.dependsOn integrationTest
+integrationTest.mustRunAfter test
