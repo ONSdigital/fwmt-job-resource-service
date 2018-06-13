@@ -85,11 +85,10 @@ processResources {
 jacocoTestReport {
     reports {
         xml.enabled true
-        html.enabled false
+        html.enabled true
     }
 }
 
-check.dependsOn jacocoTestReport
 
 findbugs {
     ignoreFailures = false
@@ -105,10 +104,22 @@ tasks.withType(FindBugs) {
     }
 }
 
+test {
+    jacoco {
+        destinationFile = file("$buildDir/jacoco/jacocoTest.exec")
+        classDumpDir = file("$buildDir/jacoco/classpathdumps")
+    }
+}
+
 task integrationTest(type: Test) {
+    jacoco {
+        destinationFile = file("$buildDir/jacoco/jacocoTest.exec")
+        classDumpDir = file("$buildDir/jacoco/classpathdumps")
+    }
     testClassesDirs = sourceSets.integrationTest.output.classesDirs
     classpath = sourceSets.integrationTest.runtimeClasspath
     outputs.upToDateWhen { false }
 }
 check.dependsOn integrationTest
+check.dependsOn jacocoTestReport
 integrationTest.mustRunAfter test
