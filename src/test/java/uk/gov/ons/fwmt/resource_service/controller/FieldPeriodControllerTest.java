@@ -45,6 +45,7 @@ public class FieldPeriodControllerTest {
   private FieldPeriodDTO fieldPeriodDTO = new FieldPeriodDTO();
 
   public static final String FIELD_PERIOD_JSON = "{\"startDate\": \"2018-01-12\", \"endDate\": \"2018-01-27\", \"fieldPeriod\": \"95B\"}";
+  public static final String FIELD_PERIOD_UPDATE_JSON = "{\"startDate\": \"2017-01-12\", \"endDate\": \"2018-02-27\", \"fieldPeriod\": \"81A\"}";
 
   @Before
   public void setUp() throws Exception {
@@ -95,13 +96,13 @@ public class FieldPeriodControllerTest {
   @Test
   public void updateFieldPeriod() throws Exception {
     when(fieldPeriodService.updateFieldPeriod(any())).thenReturn(new FieldPeriodEntity());
-    mockMvc.perform(put("/fieldPeriods").contentType(MediaType.APPLICATION_JSON).content(FIELD_PERIOD_JSON)).andExpect(status().isOk());
+    mockMvc.perform(put("/fieldPeriods").contentType(MediaType.APPLICATION_JSON).content(FIELD_PERIOD_UPDATE_JSON)).andExpect(status().isOk());
   }
 
   @Test
   public void updateFieldPeriodNotFound() throws Exception {
     when(fieldPeriodService.findFieldPeriod(any())).thenReturn(null);
-    mockMvc.perform(put("/fieldPeriods").contentType(MediaType.APPLICATION_JSON).content(FIELD_PERIOD_JSON)).andExpect(status().isNotFound());
+    mockMvc.perform(put("/fieldPeriods").contentType(MediaType.APPLICATION_JSON).content(FIELD_PERIOD_UPDATE_JSON)).andExpect(status().isNotFound());
   }
 
   @Test
