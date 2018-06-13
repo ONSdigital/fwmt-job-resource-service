@@ -42,7 +42,7 @@ public class FieldPeriodControllerIT {
 
   @Test
   public void getFieldPeriodIT() throws Exception {
-    mockMvc.perform(get("/fieldperiods/81A").with(httpBasic("user", "password"))).andExpect(status().isOk())
+    mockMvc.perform(get("/fieldPeriods/81A").with(httpBasic("user", "password"))).andExpect(status().isOk())
         .andExpect(jsonPath("$.fieldPeriod", is("81A")))
         .andExpect(jsonPath("$.endDate", is("2018-01-20")))
         .andExpect(jsonPath("$.startDate", is("2018-01-08")));
@@ -50,7 +50,7 @@ public class FieldPeriodControllerIT {
 
   @Test
   public void postFieldPeriodIT() throws Exception {
-    mockMvc.perform(post("/fieldperiods").contentType(MediaType.APPLICATION_JSON).content(FIELD_PERIOD_JSON).with(httpBasic("user", "password")));
+    mockMvc.perform(post("/fieldPeriods").contentType(MediaType.APPLICATION_JSON).content(FIELD_PERIOD_JSON).with(httpBasic("user", "password")));
     final FieldPeriodEntity foundFieldPeriod = fieldPeriodRepo.findByFieldPeriod("95B");
     assertThat(foundFieldPeriod.getStartDate()).isEqualTo(LocalDate.of(2018,1,12));
     assertThat(foundFieldPeriod.getEndDate()).isEqualTo(LocalDate.of(2018,1,27));
@@ -58,7 +58,7 @@ public class FieldPeriodControllerIT {
 
   @Test
   public void putFieldPeriodIT() throws Exception {
-    mockMvc.perform(put("/fieldperiods").contentType(MediaType.APPLICATION_JSON).content(FIELD_PERIOD_UPDATE_JSON).with(httpBasic("user", "password")));
+    mockMvc.perform(put("/fieldPeriods").contentType(MediaType.APPLICATION_JSON).content(FIELD_PERIOD_UPDATE_JSON).with(httpBasic("user", "password")));
     final FieldPeriodEntity foundFieldPeriodAfter = fieldPeriodRepo.findByFieldPeriod("81A");
     assertThat(foundFieldPeriodAfter.getStartDate()).as("Start date after update").isEqualTo(LocalDate.of(2017,1,12));
     assertThat(foundFieldPeriodAfter.getEndDate()).as("End date after update").isEqualTo(LocalDate.of(2018,2,27));
@@ -66,13 +66,13 @@ public class FieldPeriodControllerIT {
 
   @Test
   public void deleteFieldPeriodIT() throws Exception {
-    mockMvc.perform(delete("/fieldperiods").contentType(MediaType.APPLICATION_JSON).content(FIELD_PERIOD_UPDATE_JSON).with(httpBasic("user", "password")));
+    mockMvc.perform(delete("/fieldPeriods").contentType(MediaType.APPLICATION_JSON).content(FIELD_PERIOD_UPDATE_JSON).with(httpBasic("user", "password")));
     final FieldPeriodEntity foundFieldPeriodAfter = fieldPeriodRepo.findByFieldPeriod("81A");
     assertThat(foundFieldPeriodAfter).isNull();
   }
 
   @Test
   public void basicAuthFailureIT() throws Exception {
-    mockMvc.perform(get("/fieldperiods/81A")).andExpect(status().isUnauthorized());
+    mockMvc.perform(get("/fieldPeriods/81A")).andExpect(status().isUnauthorized());
   }
 }
