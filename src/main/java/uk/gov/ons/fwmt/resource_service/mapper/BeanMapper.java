@@ -12,15 +12,15 @@ import java.time.LocalDate;
 @Component
 public class BeanMapper extends ConfigurableMapper {
 
-    @Override
-    public void configureFactoryBuilder(DefaultMapperFactory.Builder builder) {
-        builder.compilerStrategy(new EclipseJdtCompilerStrategy());
-    }
+  @Override
+  public void configureFactoryBuilder(DefaultMapperFactory.Builder builder) {
+    builder.compilerStrategy(new EclipseJdtCompilerStrategy());
+  }
 
-    @Override
-    protected final void configure(final MapperFactory factory) {
-        factory.getConverterFactory().registerConverter(new PassThroughConverter(LocalDate.class));
+  @Override
+  protected final void configure(final MapperFactory factory) {
+    factory.getConverterFactory().registerConverter(new PassThroughConverter(LocalDate.class));
 
-    }
+  }
 
 }

@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Builder
 public class FieldPeriodDTO {
-    LocalDate startDate;
-    LocalDate endDate;
-    String fieldPeriod;
+  LocalDate startDate;
+  LocalDate endDate;
+  String fieldPeriod;
 }

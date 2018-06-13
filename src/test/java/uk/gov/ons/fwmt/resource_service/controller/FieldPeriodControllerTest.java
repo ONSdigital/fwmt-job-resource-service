@@ -63,7 +63,7 @@ public class FieldPeriodControllerTest {
     result.add(fieldPeriodDTO);
     when(fieldPeriodService.findFieldPeriods()).thenReturn(fieldPeriods);
     when(mapperFacade.mapAsList(fieldPeriods, FieldPeriodDTO.class)).thenReturn(result);
-    mockMvc.perform(get("/fieldperiods")).andExpect(status().isOk()).andExpect(jsonPath("$[0].fieldPeriod", is("88B")))
+    mockMvc.perform(get("/fieldPeriods")).andExpect(status().isOk()).andExpect(jsonPath("$[0].fieldPeriod", is("88B")))
         .andExpect(jsonPath("$[0].endDate", is("2018-11-15"))).andExpect(jsonPath("$[0].startDate", is("2017-11-16")));
   }
 
@@ -71,49 +71,49 @@ public class FieldPeriodControllerTest {
   public void getFieldPeriod() throws Exception {
     when(fieldPeriodService.findFieldPeriod("88B")).thenReturn(new FieldPeriodEntity());
     when(mapperFacade.map(any(), any())).thenReturn(fieldPeriodDTO);
-    mockMvc.perform(get("/fieldperiods/88B")).andExpect(status().isOk()).andExpect(jsonPath("$.fieldPeriod", is("88B")))
+    mockMvc.perform(get("/fieldPeriods/88B")).andExpect(status().isOk()).andExpect(jsonPath("$.fieldPeriod", is("88B")))
         .andExpect(jsonPath("$.endDate", is("2018-11-15"))).andExpect(jsonPath("$.startDate", is("2017-11-16")));
   }
 
   @Test
   public void getFieldPeriodNotFound() throws Exception {
     when(fieldPeriodService.findFieldPeriod("88B")).thenReturn(null);
-    mockMvc.perform(get("/fieldperiods/88B")).andExpect(status().isNotFound());
+    mockMvc.perform(get("/fieldPeriods/88B")).andExpect(status().isNotFound());
   }
 
   @Test
   public void createFieldPeriod() throws Exception {
     when(fieldPeriodService.findFieldPeriod("95B")).thenReturn(null);
-    mockMvc.perform(post("/fieldperiods").contentType(MediaType.APPLICATION_JSON).content(FIELD_PERIOD_JSON)).andExpect(status().isCreated());
+    mockMvc.perform(post("/fieldPeriods").contentType(MediaType.APPLICATION_JSON).content(FIELD_PERIOD_JSON)).andExpect(status().isCreated());
   }
 
   @Test
   public void createFieldPeriodAlreadyExists() throws Exception {
     when(fieldPeriodService.findFieldPeriod("95B")).thenReturn(new FieldPeriodEntity());
-    mockMvc.perform(post("/fieldperiods").contentType(MediaType.APPLICATION_JSON).content(FIELD_PERIOD_JSON)).andExpect(status().isConflict());
+    mockMvc.perform(post("/fieldPeriods").contentType(MediaType.APPLICATION_JSON).content(FIELD_PERIOD_JSON)).andExpect(status().isConflict());
   }
 
   @Test
   public void updateFieldPeriod() throws Exception {
     when(fieldPeriodService.updateFieldPeriod(any())).thenReturn(new FieldPeriodEntity());
-    mockMvc.perform(put("/fieldperiods").contentType(MediaType.APPLICATION_JSON).content(FIELD_PERIOD_UPDATE_JSON)).andExpect(status().isOk());
+    mockMvc.perform(put("/fieldPeriods").contentType(MediaType.APPLICATION_JSON).content(FIELD_PERIOD_UPDATE_JSON)).andExpect(status().isOk());
   }
 
   @Test
   public void updateFieldPeriodNotFound() throws Exception {
     when(fieldPeriodService.findFieldPeriod(any())).thenReturn(null);
-    mockMvc.perform(put("/fieldperiods").contentType(MediaType.APPLICATION_JSON).content(FIELD_PERIOD_UPDATE_JSON)).andExpect(status().isNotFound());
+    mockMvc.perform(put("/fieldPeriods").contentType(MediaType.APPLICATION_JSON).content(FIELD_PERIOD_UPDATE_JSON)).andExpect(status().isNotFound());
   }
 
   @Test
   public void deleteFieldPeriod() throws Exception {
     when(fieldPeriodService.findFieldPeriod(any())).thenReturn(new FieldPeriodEntity());
-    mockMvc.perform(delete("/fieldperiods").contentType(MediaType.APPLICATION_JSON).content(FIELD_PERIOD_JSON)).andExpect(status().isOk());
+    mockMvc.perform(delete("/fieldPeriods").contentType(MediaType.APPLICATION_JSON).content(FIELD_PERIOD_JSON)).andExpect(status().isOk());
   }
 
   @Test
   public void deleteFieldPeriodNotFound() throws Exception {
     when(fieldPeriodService.findFieldPeriod(any())).thenReturn(null);
-    mockMvc.perform(delete("/fieldperiods").contentType(MediaType.APPLICATION_JSON).content(FIELD_PERIOD_JSON)).andExpect(status().isNotFound());
+    mockMvc.perform(delete("/fieldPeriods").contentType(MediaType.APPLICATION_JSON).content(FIELD_PERIOD_JSON)).andExpect(status().isNotFound());
   }
 }
