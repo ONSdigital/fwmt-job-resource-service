@@ -14,6 +14,7 @@ import uk.gov.ons.fwmt.resource_service.entity.TMUserEntity;
 import uk.gov.ons.fwmt.resource_service.repo.TMUserRepo;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -112,5 +113,28 @@ public class UserControllerIT {
     assertThat(deletedUser).isNull();
   }
 
+  @Test
+  public void getUsersIT() throws Exception {
+    TMUserEntity userEntity1 = new TMUserEntity();
+    userEntity1.setActive(true);
+    userEntity1.setAlternateAuthNo("7890");
+    userEntity1.setAuthNo("1234");
+    userEntity1.setTmUsername("bla");
+    userRepo.save(userEntity1);
+    TMUserEntity userEntity2 = new TMUserEntity();
+    userEntity2.setActive(true);
+    userEntity2.setAlternateAuthNo("7887");
+    userEntity2.setAuthNo("1221");
+    userEntity2.setTmUsername("qwe");
+    userRepo.save(userEntity2);
+
+    mockMvc.perform(get("/users").with(httpBasic("user", "password"))).andExpect(jsonPath("$", hasSize(2)));
+  }
+
+  @Test
+  public void updateFieldPeriodNotExistIT() throws Exception {
+    mockMvc.perform(
+        (put("/users")).contentType(MediaType.APPLICATION_JSON).content(USER_JSON).with(httpBasic("user", "password"))).andExpect(status().isNotFound());
+  }
 
 }
