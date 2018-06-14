@@ -16,6 +16,7 @@ import uk.gov.ons.fwmt.resource_service.repo.FieldPeriodRepo;
 import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -74,5 +75,16 @@ public class FieldPeriodControllerIT {
   @Test
   public void basicAuthFailureIT() throws Exception {
     mockMvc.perform(get("/fieldPeriods/81A")).andExpect(status().isUnauthorized());
+  }
+
+  @Test
+  public void getAllFieldPeriodsIT() throws Exception {
+    mockMvc.perform(get("/fieldPeriods").with(httpBasic("user", "password"))).andExpect(jsonPath("$", hasSize(130)));//if more fieldPeriods are added through liquibase this number will need updated
+  }
+
+  @Test
+  public void updateFieldPeriodNotExistIT() throws Exception {
+    mockMvc.perform(
+        (put("/fieldPeriods")).contentType(MediaType.APPLICATION_JSON).content(FIELD_PERIOD_JSON).with(httpBasic("user", "password"))).andExpect(status().isNotFound());
   }
 }
