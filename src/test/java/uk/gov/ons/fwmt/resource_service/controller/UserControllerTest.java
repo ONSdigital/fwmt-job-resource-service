@@ -9,10 +9,13 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.http.MediaType;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import uk.gov.ons.fwmt.resource_service.Exception.RestExceptionHandler;
 import uk.gov.ons.fwmt.resource_service.data.dto.UserDTO;
 import uk.gov.ons.fwmt.resource_service.entity.TMUserEntity;
+import uk.gov.ons.fwmt.resource_service.mapper.CustomObjectMapper;
 import uk.gov.ons.fwmt.resource_service.service.TMUserService;
 
 import java.util.ArrayList;
@@ -49,7 +52,10 @@ public class UserControllerTest {
 
   @Before
   public void setUp() throws Exception {
-    this.mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
+    this.mockMvc = MockMvcBuilders.standaloneSetup(userController)
+        .setMessageConverters(new MappingJackson2HttpMessageConverter(new CustomObjectMapper()))
+        .setControllerAdvice(new RestExceptionHandler())
+        .build();
     MockitoAnnotations.initMocks(this);
     userDTO = UserDTO.builder().authNo("1234").tmUsername("bla").active(true).alternateAuthNo("7890").build();
   }

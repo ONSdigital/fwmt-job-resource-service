@@ -12,6 +12,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import uk.gov.ons.fwmt.resource_service.Exception.FWMTException;
+import uk.gov.ons.fwmt.resource_service.Exception.RestExceptionHandler;
 import uk.gov.ons.fwmt.resource_service.data.dto.FieldPeriodDTO;
 import uk.gov.ons.fwmt.resource_service.entity.FieldPeriodEntity;
 import uk.gov.ons.fwmt.resource_service.mapper.CustomObjectMapper;
@@ -50,7 +52,9 @@ public class FieldPeriodControllerTest {
   @Before
   public void setUp() throws Exception {
     this.mockMvc = MockMvcBuilders.standaloneSetup(fieldPeriodController)
-        .setMessageConverters(new MappingJackson2HttpMessageConverter(new CustomObjectMapper())).build();
+        .setMessageConverters(new MappingJackson2HttpMessageConverter(new CustomObjectMapper()))
+        .setControllerAdvice(new RestExceptionHandler())
+        .build();
     MockitoAnnotations.initMocks(this);
     fieldPeriodDTO = FieldPeriodDTO.builder().fieldPeriod("88B").endDate(LocalDate.of(2018, 11, 15))
         .startDate(LocalDate.of(2017, 11, 16)).build();
