@@ -1,4 +1,4 @@
-package uk.gov.ons.fwmt.resource_service.Exception;
+package uk.gov.ons.fwmt.resource_service.exception;
 
 public enum ExceptionCode {
   FWMT_JOB_SERVICE_0001("UNKNOWN"),

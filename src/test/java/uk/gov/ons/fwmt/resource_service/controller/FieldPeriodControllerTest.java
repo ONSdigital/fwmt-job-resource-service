@@ -12,10 +12,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import uk.gov.ons.fwmt.resource_service.Exception.FWMTException;
-import uk.gov.ons.fwmt.resource_service.Exception.RestExceptionHandler;
 import uk.gov.ons.fwmt.resource_service.data.dto.FieldPeriodDTO;
 import uk.gov.ons.fwmt.resource_service.entity.FieldPeriodEntity;
+import uk.gov.ons.fwmt.resource_service.exception.RestExceptionHandler;
 import uk.gov.ons.fwmt.resource_service.mapper.CustomObjectMapper;
 import uk.gov.ons.fwmt.resource_service.service.FieldPeriodService;
 

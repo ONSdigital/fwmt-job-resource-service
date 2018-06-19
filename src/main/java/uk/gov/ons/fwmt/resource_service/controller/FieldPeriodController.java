@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import uk.gov.ons.fwmt.resource_service.Exception.ExceptionCode;
-import uk.gov.ons.fwmt.resource_service.Exception.FWMTException;
 import uk.gov.ons.fwmt.resource_service.data.dto.FieldPeriodDTO;
 import uk.gov.ons.fwmt.resource_service.entity.FieldPeriodEntity;
+import uk.gov.ons.fwmt.resource_service.exception.ExceptionCode;
+import uk.gov.ons.fwmt.resource_service.exception.FWMTException;
 import uk.gov.ons.fwmt.resource_service.service.FieldPeriodService;
 
 import java.util.List;
