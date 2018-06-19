@@ -50,7 +50,6 @@ public class RestExceptionHandler {
         status = HttpStatus.NO_CONTENT;
         break;
     }
-    log.warn(exception.getMessage());
     return makeCommonError(request, exception, status, exception.getError().toString(), exception.getMessage());
 
   }

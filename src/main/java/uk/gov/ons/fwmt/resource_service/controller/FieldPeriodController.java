@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import uk.gov.ons.fwmt.resource_service.Exception.ExceptionCode;
 import uk.gov.ons.fwmt.resource_service.Exception.FWMTException;
 import uk.gov.ons.fwmt.resource_service.data.dto.FieldPeriodDTO;
 import uk.gov.ons.fwmt.resource_service.entity.FieldPeriodEntity;
@@ -43,7 +44,7 @@ public class FieldPeriodController {
       throws FWMTException {
     final FieldPeriodEntity fieldPeriodEntity = fieldPeriodService.findFieldPeriod(fieldPeriod);
     if (fieldPeriodEntity == null) {
-      //log.warn("field period not found during fetch");
+      log.warn(ExceptionCode.FWMT_JOB_SERVICE_0011 + String.format(" - Field Period %S not found", fieldPeriod));
       throw new FWMTException(FWMTException.Error.RESOURCE_NOT_FOUND, String.format("%S not found", fieldPeriod));
     }
     final FieldPeriodDTO result = mapperFacade.map(fieldPeriodEntity, FieldPeriodDTO.class);
@@ -53,7 +54,7 @@ public class FieldPeriodController {
   @PostMapping(consumes = "application/json", produces = "application/json")
   public ResponseEntity createFieldPeriod(@RequestBody FieldPeriodDTO fieldPeriodDTO) throws FWMTException {
     if (fieldPeriodService.findFieldPeriod(fieldPeriodDTO.getFieldPeriod()) != null) {
-      log.warn("field period already exists");
+      log.warn(ExceptionCode.FWMT_JOB_SERVICE_0014 + String.format(" - Field Period %S already exists", fieldPeriodDTO.getFieldPeriod()));
       throw new FWMTException(FWMTException.Error.CONFLICT, "Field Period already exists");
     }
     fieldPeriodService.createFieldPeriod(mapperFacade.map(fieldPeriodDTO, FieldPeriodEntity.class));
@@ -66,7 +67,7 @@ public class FieldPeriodController {
     FieldPeriodEntity fieldPeriodEntity = fieldPeriodService
         .updateFieldPeriod(mapperFacade.map(fieldPeriodDTO, FieldPeriodEntity.class));
     if (fieldPeriodEntity == null) {
-      log.warn("field period not found during update");
+      log.warn(ExceptionCode.FWMT_JOB_SERVICE_0011 + String.format(" - Field Period %S not found", fieldPeriodDTO.getFieldPeriod()));
       throw new FWMTException(FWMTException.Error.RESOURCE_NOT_FOUND, "Field Period not found");
     }
     return ResponseEntity.ok(fieldPeriodDTO);
@@ -77,7 +78,7 @@ public class FieldPeriodController {
       throws FWMTException {
     final FieldPeriodEntity fieldPeriodToDelete = fieldPeriodService.findFieldPeriod(fieldPeriodDTO.getFieldPeriod());
     if (fieldPeriodToDelete == null) {
-      log.warn("field period not found during delete");
+      log.warn(ExceptionCode.FWMT_JOB_SERVICE_0011 + String.format(" - Field Period %S not found", fieldPeriodDTO.getFieldPeriod()));
       throw new FWMTException(FWMTException.Error.RESOURCE_NOT_FOUND, "Field Period not found");
     }
     fieldPeriodService.deleteFieldPeriod(fieldPeriodToDelete);

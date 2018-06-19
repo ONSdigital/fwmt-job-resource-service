@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import uk.gov.ons.fwmt.resource_service.Exception.ExceptionCode;
 import uk.gov.ons.fwmt.resource_service.Exception.FWMTException;
 import uk.gov.ons.fwmt.resource_service.data.dto.UserDTO;
 import uk.gov.ons.fwmt.resource_service.entity.TMUserEntity;
@@ -40,7 +41,7 @@ public class UserController {
   @PostMapping(consumes = "application/json", produces = "application/json")
   public ResponseEntity createUser(@RequestBody UserDTO userDTO) throws FWMTException {
     if (userService.findUserAuthNo(userDTO.getAuthNo()) != null) {
-      log.info("user already exists");
+      log.warn(ExceptionCode.FWMT_JOB_SERVICE_0012 + String.format(" - User %S already exists", userDTO.getAuthNo()));
       throw new FWMTException(FWMTException.Error.CONFLICT, "User already exists");
     }
 
@@ -52,6 +53,7 @@ public class UserController {
   public ResponseEntity updateUser(@RequestBody UserDTO userDTO) throws FWMTException {
     TMUserEntity user = userService.updateUser(mapperfacade.map(userDTO, TMUserEntity.class));
     if (user == null) {
+      log.warn(ExceptionCode.FWMT_JOB_SERVICE_0005 + String.format(" - User %S not found", userDTO.getAuthNo()));
       throw new FWMTException(FWMTException.Error.RESOURCE_NOT_FOUND, "User not found");
     }
     return ResponseEntity.ok(userDTO);
@@ -61,6 +63,7 @@ public class UserController {
   public ResponseEntity<UserDTO> deleteUser(@RequestBody UserDTO userDTO) throws FWMTException {
     TMUserEntity userToDelete = userService.findUserAuthNo(userDTO.getAuthNo());
     if (userToDelete == null) {
+      log.warn(ExceptionCode.FWMT_JOB_SERVICE_0005 + String.format(" - User %S not found", userDTO.getAuthNo()));
       throw new FWMTException(FWMTException.Error.RESOURCE_NOT_FOUND, "User not found");
     }
     userService.deleteUser(userToDelete);
@@ -71,7 +74,7 @@ public class UserController {
   public ResponseEntity<UserDTO> getUserByAuthNo(@PathVariable("authNo") String authNo) throws FWMTException {
     TMUserEntity user = userService.findUserAuthNo(authNo);
     if (user == null) {
-      log.warn("user not found by authNo");
+      log.warn(ExceptionCode.FWMT_JOB_SERVICE_0005 + String.format(" - User %S not found by authNo", authNo));
       throw new FWMTException(FWMTException.Error.RESOURCE_NOT_FOUND, "User not found");
     }
     UserDTO result = mapperfacade.map(user, UserDTO.class);
@@ -82,7 +85,7 @@ public class UserController {
   public ResponseEntity<UserDTO> getUserByAltAuthNo(@PathVariable("altAuthNo") String altAuthNo) throws FWMTException {
     TMUserEntity user = userService.findUserAlternateAuthNo(altAuthNo);
     if (user == null) {
-      log.warn("user not found by alternate authNo");
+      log.warn(ExceptionCode.FWMT_JOB_SERVICE_0005 + String.format(" - User %S not found by alternate authNo", altAuthNo));
       throw new FWMTException(FWMTException.Error.RESOURCE_NOT_FOUND, "User not found");
     }
     UserDTO result = mapperfacade.map(user, UserDTO.class);
