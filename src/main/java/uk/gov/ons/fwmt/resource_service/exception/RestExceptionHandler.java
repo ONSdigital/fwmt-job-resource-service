@@ -26,29 +26,33 @@ public class RestExceptionHandler {
 
   @ExceptionHandler(Exception.class)
   public ResponseEntity<GatewayCommonErrorDTO> handleAnyException(HttpServletRequest request, Exception exception) {
-    log.error(ExceptionCode.FWMT_JOB_SERVICE_0001.toString()+" "+ExceptionCode.FWMT_JOB_SERVICE_0001.getError(), exception);
+    log.error(
+        ExceptionCode.FWMT_RESOURCE_SERVICE_0001.toString() + " " + ExceptionCode.FWMT_RESOURCE_SERVICE_0001.getError(),
+        exception);
     return makeCommonError(request, exception, HttpStatus.INTERNAL_SERVER_ERROR, "Unknown error", "Unknown error");
   }
 
   @ExceptionHandler(FWMTException.class)
-  public ResponseEntity<GatewayCommonErrorDTO> handleFWMTException(HttpServletRequest request, FWMTException exception) {
+  public ResponseEntity<GatewayCommonErrorDTO> handleFWMTException(HttpServletRequest request,
+      FWMTException exception) {
     HttpStatus status;
     switch (exception.getError()) {
-      case RESOURCE_NOT_FOUND:
-        status = HttpStatus.NOT_FOUND;
-        break;
-      case CONFLICT:
-        status = HttpStatus.CONFLICT;
-        break;
-      case ACCESS_DENIED:
-        status = HttpStatus.UNAUTHORIZED;
-        break;
-      case SYSTEM_ERROR:
-        status = HttpStatus.INTERNAL_SERVER_ERROR;
-        break;
-      default:
-        status = HttpStatus.NO_CONTENT;
-        break;
+    case FWMT_RESOURCE_SERVICE_0002:
+    case FWMT_RESOURCE_SERVICE_0003:
+    case FWMT_RESOURCE_SERVICE_0004:
+      status = HttpStatus.NOT_FOUND;
+      break;
+    case FWMT_RESOURCE_SERVICE_0005:
+    case FWMT_RESOURCE_SERVICE_0006:
+    case FWMT_RESOURCE_SERVICE_0007:
+      status = HttpStatus.CONFLICT;
+      break;
+    case FWMT_RESOURCE_SERVICE_0001:
+      status = HttpStatus.INTERNAL_SERVER_ERROR;
+      break;
+    default:
+      status = HttpStatus.NO_CONTENT;
+      break;
     }
     return makeCommonError(request, exception, status, exception.getError().toString(), exception.getMessage());
 

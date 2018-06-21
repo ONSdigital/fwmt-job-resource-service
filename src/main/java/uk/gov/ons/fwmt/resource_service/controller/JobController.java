@@ -42,8 +42,8 @@ public class JobController {
   @PostMapping(produces = "application/json", consumes = "application/json")
   public ResponseEntity createJob(@RequestBody JobDTO jobDTO) throws FWMTException {
     if (jobService.findByJobId(jobDTO.getTmJobId()) != null) {
-      log.warn(ExceptionCode.FWMT_JOB_SERVICE_0013 + String.format(" - Job %S already exists", jobDTO.getTmJobId()));
-      throw new FWMTException(FWMTException.Error.CONFLICT, "Job already exists");
+      log.warn(ExceptionCode.FWMT_RESOURCE_SERVICE_0006 + String.format(" - Job %S already exists", jobDTO.getTmJobId()));
+      throw new FWMTException(ExceptionCode.FWMT_RESOURCE_SERVICE_0006, String.format("- Job %S not found", jobDTO.getTmJobId()));
     }
     jobService.createJob(mapperfacade.map(jobDTO, TMJobEntity.class));
     return new ResponseEntity(HttpStatus.CREATED);
@@ -53,8 +53,8 @@ public class JobController {
   public ResponseEntity updateJob(@RequestBody JobDTO jobDTO) throws FWMTException {
     final TMJobEntity job = jobService.updateJob(mapperfacade.map(jobDTO, TMJobEntity.class));
     if (job == null) {
-      log.warn(ExceptionCode.FWMT_JOB_SERVICE_0004 + String.format(" - Job %S not found", jobDTO.getTmJobId()));
-      throw new FWMTException(FWMTException.Error.RESOURCE_NOT_FOUND, "Job not found");
+      log.warn(ExceptionCode.FWMT_RESOURCE_SERVICE_0002 + String.format(" - Job %S not found", jobDTO.getTmJobId()));
+      throw new FWMTException(ExceptionCode.FWMT_RESOURCE_SERVICE_0002, String.format("- Job %S not found", jobDTO.getTmJobId()));
     }
     return ResponseEntity.ok(jobDTO);
   }
@@ -63,8 +63,8 @@ public class JobController {
   public ResponseEntity<JobDTO> deleteJob(@RequestBody JobDTO jobDTO) throws FWMTException {
     final TMJobEntity jobToDelete = jobService.findByJobId(jobDTO.getTmJobId());
     if (jobToDelete == null) {
-      log.warn(ExceptionCode.FWMT_JOB_SERVICE_0004 + String.format(" - Job %S not found", jobDTO.getTmJobId()));
-      throw new FWMTException(FWMTException.Error.RESOURCE_NOT_FOUND, "Job not found");
+      log.warn(ExceptionCode.FWMT_RESOURCE_SERVICE_0002 + String.format(" - Job %S not found", jobDTO.getTmJobId()));
+      throw new FWMTException(ExceptionCode.FWMT_RESOURCE_SERVICE_0002, String.format("- Job %S not found", jobDTO.getTmJobId()));
     }
     jobService.deleteJob(jobToDelete);
     return ResponseEntity.ok(jobDTO);
@@ -74,8 +74,8 @@ public class JobController {
   public ResponseEntity<JobDTO> getJobByJobId(@PathVariable("jobId") String jobId) throws FWMTException {
     final TMJobEntity job = jobService.findByJobId(jobId);
     if (job == null) {
-      log.warn(ExceptionCode.FWMT_JOB_SERVICE_0004 + String.format(" - Job %S not found", jobId));
-      throw new FWMTException(FWMTException.Error.RESOURCE_NOT_FOUND, "Job not found");
+      log.warn(ExceptionCode.FWMT_RESOURCE_SERVICE_0002 + String.format(" - Job %S not found", jobId));
+      throw new FWMTException(ExceptionCode.FWMT_RESOURCE_SERVICE_0002, String.format("- Job %S not found", jobId));
     }
     final JobDTO result = mapperfacade.map(job, JobDTO.class);
     return ResponseEntity.ok(result);

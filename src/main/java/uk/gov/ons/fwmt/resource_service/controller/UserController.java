@@ -41,8 +41,8 @@ public class UserController {
   @PostMapping(consumes = "application/json", produces = "application/json")
   public ResponseEntity createUser(@RequestBody UserDTO userDTO) throws FWMTException {
     if (userService.findUserAuthNo(userDTO.getAuthNo()) != null) {
-      log.warn(ExceptionCode.FWMT_JOB_SERVICE_0012 + String.format(" - User %S already exists", userDTO.getAuthNo()));
-      throw new FWMTException(FWMTException.Error.CONFLICT, "User already exists");
+      log.warn(ExceptionCode.FWMT_RESOURCE_SERVICE_0005 + String.format(" - User %S already exists", userDTO.getAuthNo()));
+      throw new FWMTException(ExceptionCode.FWMT_RESOURCE_SERVICE_0005, String.format("- User %S already exists", userDTO.getAuthNo()));
     }
 
     userService.createUser(mapperfacade.map(userDTO, TMUserEntity.class));
@@ -53,8 +53,8 @@ public class UserController {
   public ResponseEntity updateUser(@RequestBody UserDTO userDTO) throws FWMTException {
     TMUserEntity user = userService.updateUser(mapperfacade.map(userDTO, TMUserEntity.class));
     if (user == null) {
-      log.warn(ExceptionCode.FWMT_JOB_SERVICE_0005 + String.format(" - User %S not found", userDTO.getAuthNo()));
-      throw new FWMTException(FWMTException.Error.RESOURCE_NOT_FOUND, "User not found");
+      log.warn(ExceptionCode.FWMT_RESOURCE_SERVICE_0003 + String.format(" - User %S not found", userDTO.getAuthNo()));
+      throw new FWMTException(ExceptionCode.FWMT_RESOURCE_SERVICE_0003, String.format("- User %S not found", userDTO.getAuthNo()));
     }
     return ResponseEntity.ok(userDTO);
   }
@@ -63,8 +63,8 @@ public class UserController {
   public ResponseEntity<UserDTO> deleteUser(@RequestBody UserDTO userDTO) throws FWMTException {
     TMUserEntity userToDelete = userService.findUserAuthNo(userDTO.getAuthNo());
     if (userToDelete == null) {
-      log.warn(ExceptionCode.FWMT_JOB_SERVICE_0005 + String.format(" - User %S not found", userDTO.getAuthNo()));
-      throw new FWMTException(FWMTException.Error.RESOURCE_NOT_FOUND, "User not found");
+      log.warn(ExceptionCode.FWMT_RESOURCE_SERVICE_0003 + String.format(" - User %S not found", userDTO.getAuthNo()));
+      throw new FWMTException(ExceptionCode.FWMT_RESOURCE_SERVICE_0003, String.format("- User %S already exists", userDTO.getAuthNo()));
     }
     userService.deleteUser(userToDelete);
     return ResponseEntity.ok(userDTO);
@@ -74,8 +74,8 @@ public class UserController {
   public ResponseEntity<UserDTO> getUserByAuthNo(@PathVariable("authNo") String authNo) throws FWMTException {
     TMUserEntity user = userService.findUserAuthNo(authNo);
     if (user == null) {
-      log.warn(ExceptionCode.FWMT_JOB_SERVICE_0005 + String.format(" - User %S not found by authNo", authNo));
-      throw new FWMTException(FWMTException.Error.RESOURCE_NOT_FOUND, "User not found");
+      log.warn(ExceptionCode.FWMT_RESOURCE_SERVICE_0003 + String.format(" - User %S not found by authNo", authNo));
+      throw new FWMTException(ExceptionCode.FWMT_RESOURCE_SERVICE_0003, String.format("- User %S already exists", authNo));
     }
     UserDTO result = mapperfacade.map(user, UserDTO.class);
     return ResponseEntity.ok(result);
@@ -85,8 +85,8 @@ public class UserController {
   public ResponseEntity<UserDTO> getUserByAltAuthNo(@PathVariable("altAuthNo") String altAuthNo) throws FWMTException {
     TMUserEntity user = userService.findUserAlternateAuthNo(altAuthNo);
     if (user == null) {
-      log.warn(ExceptionCode.FWMT_JOB_SERVICE_0005 + String.format(" - User %S not found by alternate authNo", altAuthNo));
-      throw new FWMTException(FWMTException.Error.RESOURCE_NOT_FOUND, "User not found");
+      log.warn(ExceptionCode.FWMT_RESOURCE_SERVICE_0003 + String.format(" - User %S not found by alternate authNo", altAuthNo));
+      throw new FWMTException(ExceptionCode.FWMT_RESOURCE_SERVICE_0003, String.format("- User %S already exists", altAuthNo));
     }
     UserDTO result = mapperfacade.map(user, UserDTO.class);
     return ResponseEntity.ok(result);

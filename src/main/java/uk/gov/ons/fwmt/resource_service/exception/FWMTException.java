@@ -2,24 +2,18 @@ package uk.gov.ons.fwmt.resource_service.exception;
 
 public class FWMTException extends Exception {
 
-  public enum Error {
-    SYSTEM_ERROR,
-    RESOURCE_NOT_FOUND,
-    ACCESS_DENIED,
-    CONFLICT
-  }
-  private Error error;
+  private ExceptionCode error;
 
-  public final Error getError() {
+  public final ExceptionCode getError() {
     return error;
   }
 
-  public FWMTException(Error error, String message) {
+  public FWMTException(ExceptionCode error, String message) {
     super(error.toString() + " " + message);
     this.error = error;
   }
 
-  public FWMTException(Error error, Throwable cause) {
+  public FWMTException(ExceptionCode error, Throwable cause) {
     super(error.toString() + " " + cause);
     this.error = error;
   }

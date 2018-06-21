@@ -18,6 +18,7 @@ import java.time.LocalDate;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.isA;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -38,8 +39,8 @@ public class FieldPeriodControllerIT {
 
   @Autowired private FieldPeriodRepo fieldPeriodRepo;
 
-  public static final String FIELD_PERIOD_JSON = "{\"startDate\": \"2018-01-12\", \"endDate\": \"2018-01-27\", \"fieldPeriod\": \"95B\"}";
-  public static final String FIELD_PERIOD_UPDATE_JSON = "{\"startDate\": \"2017-01-12\", \"endDate\": \"2018-02-27\", \"fieldPeriod\": \"81A\"}";
+  private static final String FIELD_PERIOD_JSON = "{\"startDate\": \"2018-01-12\", \"endDate\": \"2018-01-27\", \"fieldPeriod\": \"95B\"}";
+  private static final String FIELD_PERIOD_UPDATE_JSON = "{\"startDate\": \"2017-01-12\", \"endDate\": \"2018-02-27\", \"fieldPeriod\": \"81A\"}";
 
   @Test
   public void getFieldPeriodIT() throws Exception {
@@ -51,23 +52,26 @@ public class FieldPeriodControllerIT {
 
   @Test
   public void postFieldPeriodIT() throws Exception {
-    mockMvc.perform(post("/fieldPeriods").contentType(MediaType.APPLICATION_JSON).content(FIELD_PERIOD_JSON).with(httpBasic("user", "password")));
+    mockMvc.perform(post("/fieldPeriods").contentType(MediaType.APPLICATION_JSON).content(FIELD_PERIOD_JSON)
+        .with(httpBasic("user", "password")));
     final FieldPeriodEntity foundFieldPeriod = fieldPeriodRepo.findByFieldPeriod("95B");
-    assertThat(foundFieldPeriod.getStartDate()).isEqualTo(LocalDate.of(2018,1,12));
-    assertThat(foundFieldPeriod.getEndDate()).isEqualTo(LocalDate.of(2018,1,27));
+    assertThat(foundFieldPeriod.getStartDate()).isEqualTo(LocalDate.of(2018, 1, 12));
+    assertThat(foundFieldPeriod.getEndDate()).isEqualTo(LocalDate.of(2018, 1, 27));
   }
 
   @Test
   public void putFieldPeriodIT() throws Exception {
-    mockMvc.perform(put("/fieldPeriods").contentType(MediaType.APPLICATION_JSON).content(FIELD_PERIOD_UPDATE_JSON).with(httpBasic("user", "password")));
+    mockMvc.perform(put("/fieldPeriods").contentType(MediaType.APPLICATION_JSON).content(FIELD_PERIOD_UPDATE_JSON)
+        .with(httpBasic("user", "password")));
     final FieldPeriodEntity foundFieldPeriodAfter = fieldPeriodRepo.findByFieldPeriod("81A");
-    assertThat(foundFieldPeriodAfter.getStartDate()).as("Start date after update").isEqualTo(LocalDate.of(2017,1,12));
-    assertThat(foundFieldPeriodAfter.getEndDate()).as("End date after update").isEqualTo(LocalDate.of(2018,2,27));
+    assertThat(foundFieldPeriodAfter.getStartDate()).as("Start date after update").isEqualTo(LocalDate.of(2017, 1, 12));
+    assertThat(foundFieldPeriodAfter.getEndDate()).as("End date after update").isEqualTo(LocalDate.of(2018, 2, 27));
   }
 
   @Test
   public void deleteFieldPeriodIT() throws Exception {
-    mockMvc.perform(delete("/fieldPeriods").contentType(MediaType.APPLICATION_JSON).content(FIELD_PERIOD_UPDATE_JSON).with(httpBasic("user", "password")));
+    mockMvc.perform(delete("/fieldPeriods").contentType(MediaType.APPLICATION_JSON).content(FIELD_PERIOD_UPDATE_JSON)
+        .with(httpBasic("user", "password")));
     final FieldPeriodEntity foundFieldPeriodAfter = fieldPeriodRepo.findByFieldPeriod("81A");
     assertThat(foundFieldPeriodAfter).isNull();
   }
@@ -79,12 +83,20 @@ public class FieldPeriodControllerIT {
 
   @Test
   public void getAllFieldPeriodsIT() throws Exception {
-    mockMvc.perform(get("/fieldPeriods").with(httpBasic("user", "password"))).andExpect(jsonPath("$", hasSize(130)));//if more fieldPeriods are added through liquibase this number will need updated
+    mockMvc.perform(get("/fieldPeriods").with(httpBasic("user", "password"))).andExpect(
+        jsonPath("$", hasSize(130)));//if more fieldPeriods are added through liquibase this number will need updated
   }
 
   @Test
   public void updateFieldPeriodNotExistIT() throws Exception {
     mockMvc.perform(
-        (put("/fieldPeriods")).contentType(MediaType.APPLICATION_JSON).content(FIELD_PERIOD_JSON).with(httpBasic("user", "password"))).andExpect(status().isNotFound());
+        (put("/fieldPeriods")).contentType(MediaType.APPLICATION_JSON).content(FIELD_PERIOD_JSON)
+            .with(httpBasic("user", "password"))).andExpect(status().isNotFound())
+        .andExpect(jsonPath("$.error", is("FWMT_RESOURCE_SERVICE_0004")))
+        .andExpect(jsonPath("$.exception", is("uk.gov.ons.fwmt.resource_service.exception.FWMTException")))
+        .andExpect(jsonPath("$.message", is("FWMT_RESOURCE_SERVICE_0004 - Field Period 95B not found")))
+        .andExpect(jsonPath("$.path", is("/fieldPeriods")))
+        .andExpect(jsonPath("$.status", is(404)))
+        .andExpect(jsonPath("$.timestamp", isA(String.class)));
   }
 }
