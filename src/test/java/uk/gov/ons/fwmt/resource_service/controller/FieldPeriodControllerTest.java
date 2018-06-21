@@ -81,7 +81,7 @@ public class FieldPeriodControllerTest {
   @Test
   public void getFieldPeriodNotFound() throws Exception {
     when(fieldPeriodService.findFieldPeriod("88B")).thenReturn(null);
-    mockMvc.perform(get("/fieldPeriods/88B")).andExpect(status().isNotFound());
+    mockMvc.perform(get("/fieldPeriods/88B")).andExpect(status().isNotFound()).andExpect(jsonPath("$.error", is("FWMT_RESOURCE_SERVICE_0004")));
   }
 
   @Test
@@ -93,7 +93,7 @@ public class FieldPeriodControllerTest {
   @Test
   public void createFieldPeriodAlreadyExists() throws Exception {
     when(fieldPeriodService.findFieldPeriod("95B")).thenReturn(new FieldPeriodEntity());
-    mockMvc.perform(post("/fieldPeriods").contentType(MediaType.APPLICATION_JSON).content(FIELD_PERIOD_JSON)).andExpect(status().isConflict());
+    mockMvc.perform(post("/fieldPeriods").contentType(MediaType.APPLICATION_JSON).content(FIELD_PERIOD_JSON)).andExpect(status().isConflict()).andExpect(jsonPath("$.error", is("FWMT_RESOURCE_SERVICE_0007")));
   }
 
   @Test
@@ -105,7 +105,7 @@ public class FieldPeriodControllerTest {
   @Test
   public void updateFieldPeriodNotFound() throws Exception {
     when(fieldPeriodService.findFieldPeriod(any())).thenReturn(null);
-    mockMvc.perform(put("/fieldPeriods").contentType(MediaType.APPLICATION_JSON).content(FIELD_PERIOD_UPDATE_JSON)).andExpect(status().isNotFound());
+    mockMvc.perform(put("/fieldPeriods").contentType(MediaType.APPLICATION_JSON).content(FIELD_PERIOD_UPDATE_JSON)).andExpect(status().isNotFound()).andExpect(jsonPath("$.error", is("FWMT_RESOURCE_SERVICE_0004")));
   }
 
   @Test
@@ -117,6 +117,6 @@ public class FieldPeriodControllerTest {
   @Test
   public void deleteFieldPeriodNotFound() throws Exception {
     when(fieldPeriodService.findFieldPeriod(any())).thenReturn(null);
-    mockMvc.perform(delete("/fieldPeriods").contentType(MediaType.APPLICATION_JSON).content(FIELD_PERIOD_JSON)).andExpect(status().isNotFound());
+    mockMvc.perform(delete("/fieldPeriods").contentType(MediaType.APPLICATION_JSON).content(FIELD_PERIOD_JSON)).andExpect(status().isNotFound()).andExpect(jsonPath("$.error", is("FWMT_RESOURCE_SERVICE_0004")));
   }
 }

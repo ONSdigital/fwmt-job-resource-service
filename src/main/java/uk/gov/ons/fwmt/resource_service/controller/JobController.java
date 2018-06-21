@@ -43,7 +43,7 @@ public class JobController {
   public ResponseEntity createJob(@RequestBody JobDTO jobDTO) throws FWMTException {
     if (jobService.findByJobId(jobDTO.getTmJobId()) != null) {
       log.warn(ExceptionCode.FWMT_RESOURCE_SERVICE_0006 + String.format(" - Job %S already exists", jobDTO.getTmJobId()));
-      throw new FWMTException(ExceptionCode.FWMT_RESOURCE_SERVICE_0006, String.format("- Job %S not found", jobDTO.getTmJobId()));
+      throw new FWMTException(ExceptionCode.FWMT_RESOURCE_SERVICE_0006, String.format("- Job %S already exists", jobDTO.getTmJobId()));
     }
     jobService.createJob(mapperfacade.map(jobDTO, TMJobEntity.class));
     return new ResponseEntity(HttpStatus.CREATED);
