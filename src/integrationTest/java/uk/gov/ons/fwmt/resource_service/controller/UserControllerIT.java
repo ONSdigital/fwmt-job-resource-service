@@ -16,6 +16,7 @@ import uk.gov.ons.fwmt.resource_service.repo.TMUserRepo;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.isA;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -40,7 +41,8 @@ public class UserControllerIT {
 
   @Test
   public void createUserIT() throws Exception {
-    mockMvc.perform(post("/users").contentType(MediaType.APPLICATION_JSON).content(USER_JSON).with(httpBasic("user", "password")));
+    mockMvc.perform(
+        post("/users").contentType(MediaType.APPLICATION_JSON).content(USER_JSON).with(httpBasic("user", "password")));
     final TMUserEntity createdUser = userRepo.findByAuthNo("1234");
     assertThat(createdUser.getAlternateAuthNo()).isEqualTo("7890");
     assertThat(createdUser.getTmUsername()).isEqualTo("bla");
@@ -56,7 +58,8 @@ public class UserControllerIT {
     userEntity.setTmUsername("qwerty");
     userRepo.save(userEntity);
 
-    mockMvc.perform(put("/users").contentType(MediaType.APPLICATION_JSON).content(USER_JSON).with(httpBasic("user", "password")));
+    mockMvc.perform(
+        put("/users").contentType(MediaType.APPLICATION_JSON).content(USER_JSON).with(httpBasic("user", "password")));
 
     final TMUserEntity updatedUser = userRepo.findByAuthNo("1234");
     assertThat(updatedUser.getAlternateAuthNo()).isEqualTo("7890");
@@ -107,7 +110,9 @@ public class UserControllerIT {
     userEntity.setTmUsername("bla");
     userRepo.save(userEntity);
 
-    mockMvc.perform(delete("/users").contentType(MediaType.APPLICATION_JSON).content(USER_JSON).with(httpBasic("user", "password"))).andExpect(status().isOk());
+    mockMvc.perform(
+        delete("/users").contentType(MediaType.APPLICATION_JSON).content(USER_JSON).with(httpBasic("user", "password")))
+        .andExpect(status().isOk());
 
     final TMUserEntity deletedUser = userRepo.findByAuthNo("1234");
     assertThat(deletedUser).isNull();
@@ -132,9 +137,16 @@ public class UserControllerIT {
   }
 
   @Test
-  public void updateFieldPeriodNotExistIT() throws Exception {
+  public void updateUserNotExistIT() throws Exception {
     mockMvc.perform(
-        (put("/users")).contentType(MediaType.APPLICATION_JSON).content(USER_JSON).with(httpBasic("user", "password"))).andExpect(status().isNotFound());
+        (put("/users")).contentType(MediaType.APPLICATION_JSON).content(USER_JSON).with(httpBasic("user", "password")))
+        .andExpect(status().isNotFound())
+        .andExpect(jsonPath("$.error", is("FWMT_RESOURCE_SERVICE_0003")))
+        .andExpect(jsonPath("$.exception", is("uk.gov.ons.fwmt.resource_service.exception.FWMTException")))
+        .andExpect(jsonPath("$.message", is("FWMT_RESOURCE_SERVICE_0003 - User 1234 not found")))
+        .andExpect(jsonPath("$.path", is("/users")))
+        .andExpect(jsonPath("$.status", is(404)))
+        .andExpect(jsonPath("$.timestamp", isA(String.class)));
   }
 
 }

@@ -9,10 +9,13 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.http.MediaType;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import uk.gov.ons.fwmt.resource_service.data.dto.JobDTO;
 import uk.gov.ons.fwmt.resource_service.entity.TMJobEntity;
+import uk.gov.ons.fwmt.resource_service.exception.RestExceptionHandler;
+import uk.gov.ons.fwmt.resource_service.mapper.CustomObjectMapper;
 import uk.gov.ons.fwmt.resource_service.service.TMJobService;
 
 import java.util.ArrayList;
@@ -47,7 +50,10 @@ public class JobControllerTest {
 
   @Before
   public void setUp() throws Exception {
-    this.mockMvc = MockMvcBuilders.standaloneSetup(jobController).build();
+    this.mockMvc = MockMvcBuilders.standaloneSetup(jobController)
+        .setMessageConverters(new MappingJackson2HttpMessageConverter(new CustomObjectMapper()))
+        .setControllerAdvice(new RestExceptionHandler())
+        .build();
     MockitoAnnotations.initMocks(this);
     jobDTO = JobDTO.builder().lastAuthNo("1234").tmJobId("4567").build();
   }

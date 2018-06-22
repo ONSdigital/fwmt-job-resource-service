@@ -16,6 +16,7 @@ import uk.gov.ons.fwmt.resource_service.repo.TMJobRepo;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.isA;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -36,7 +37,7 @@ public class JobControllerIT {
 
   @Autowired private TMJobRepo jobRepo;
 
-  public static final String JOB_JSON = "{ \"tmJobId\": \"1234-5678\", \"lastAuthNo\": \"1276\" }";
+  private static final String JOB_JSON = "{ \"tmJobId\": \"1234-5678\", \"lastAuthNo\": \"1276\" }";
 
   @Test
   public void getJobByJobIdIT() throws Exception {
@@ -97,6 +98,13 @@ public class JobControllerIT {
   @Test
   public void updateJobNotExistIT() throws Exception {
     mockMvc.perform(
-        (put("/jobs")).contentType(MediaType.APPLICATION_JSON).content(JOB_JSON).with(httpBasic("user", "password"))).andExpect(status().isNotFound());
+        (put("/jobs")).contentType(MediaType.APPLICATION_JSON).content(JOB_JSON).with(httpBasic("user", "password")))
+        .andExpect(status().isNotFound())
+        .andExpect(jsonPath("$.error", is("FWMT_RESOURCE_SERVICE_0002")))
+        .andExpect(jsonPath("$.exception", is("uk.gov.ons.fwmt.resource_service.exception.FWMTException")))
+        .andExpect(jsonPath("$.message", is("FWMT_RESOURCE_SERVICE_0002 - Job 1234-5678 not found")))
+        .andExpect(jsonPath("$.path", is("/jobs")))
+        .andExpect(jsonPath("$.status", is(404)))
+        .andExpect(jsonPath("$.timestamp", isA(String.class)));
   }
 }

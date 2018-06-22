@@ -5,9 +5,18 @@ import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import uk.gov.ons.fwmt.resource_service.data.dto.UserDTO;
 import uk.gov.ons.fwmt.resource_service.entity.TMUserEntity;
+import uk.gov.ons.fwmt.resource_service.exception.ExceptionCode;
+import uk.gov.ons.fwmt.resource_service.exception.FWMTException;
 import uk.gov.ons.fwmt.resource_service.service.TMUserService;
 
 import java.util.List;
@@ -30,10 +39,10 @@ public class UserController {
   }
 
   @PostMapping(consumes = "application/json", produces = "application/json")
-  public ResponseEntity createUser(@RequestBody UserDTO userDTO) {
+  public ResponseEntity createUser(@RequestBody UserDTO userDTO) throws FWMTException {
     if (userService.findUserAuthNo(userDTO.getAuthNo()) != null) {
-      log.info("user already exists");
-      return new ResponseEntity(HttpStatus.CONFLICT);
+      log.warn(ExceptionCode.FWMT_RESOURCE_SERVICE_0005 + String.format(" - User %S already exists", userDTO.getAuthNo()));
+      throw new FWMTException(ExceptionCode.FWMT_RESOURCE_SERVICE_0005, String.format("- User %S already exists", userDTO.getAuthNo()));
     }
 
     userService.createUser(mapperfacade.map(userDTO, TMUserEntity.class));
@@ -41,41 +50,43 @@ public class UserController {
   }
 
   @PutMapping(consumes = "application/json", produces = "application/json")
-  public ResponseEntity updateUser(@RequestBody UserDTO userDTO) {
+  public ResponseEntity updateUser(@RequestBody UserDTO userDTO) throws FWMTException {
     TMUserEntity user = userService.updateUser(mapperfacade.map(userDTO, TMUserEntity.class));
     if (user == null) {
-      return new ResponseEntity(HttpStatus.NOT_FOUND);
+      log.warn(ExceptionCode.FWMT_RESOURCE_SERVICE_0003 + String.format(" - User %S not found", userDTO.getAuthNo()));
+      throw new FWMTException(ExceptionCode.FWMT_RESOURCE_SERVICE_0003, String.format("- User %S not found", userDTO.getAuthNo()));
     }
     return ResponseEntity.ok(userDTO);
   }
 
   @DeleteMapping(consumes = "application/json", produces = "application/json")
-  public ResponseEntity<UserDTO> deleteUser(@RequestBody UserDTO userDTO) {
+  public ResponseEntity<UserDTO> deleteUser(@RequestBody UserDTO userDTO) throws FWMTException {
     TMUserEntity userToDelete = userService.findUserAuthNo(userDTO.getAuthNo());
     if (userToDelete == null) {
-      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+      log.warn(ExceptionCode.FWMT_RESOURCE_SERVICE_0003 + String.format(" - User %S not found", userDTO.getAuthNo()));
+      throw new FWMTException(ExceptionCode.FWMT_RESOURCE_SERVICE_0003, String.format("- User %S not found", userDTO.getAuthNo()));
     }
     userService.deleteUser(userToDelete);
     return ResponseEntity.ok(userDTO);
   }
 
   @GetMapping(value = "/auth/{authNo}", produces = "application/json")
-  public ResponseEntity<UserDTO> getUserByAuthNo(@PathVariable("authNo") String authNo) {
+  public ResponseEntity<UserDTO> getUserByAuthNo(@PathVariable("authNo") String authNo) throws FWMTException {
     TMUserEntity user = userService.findUserAuthNo(authNo);
     if (user == null) {
-      log.warn("user not found by authNo");
-      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+      log.warn(ExceptionCode.FWMT_RESOURCE_SERVICE_0003 + String.format(" - User %S not found by authNo", authNo));
+      throw new FWMTException(ExceptionCode.FWMT_RESOURCE_SERVICE_0003, String.format("- User %S not found by authNo", authNo));
     }
     UserDTO result = mapperfacade.map(user, UserDTO.class);
     return ResponseEntity.ok(result);
   }
 
   @GetMapping(value = "/alternative/{altAuthNo}", produces = "application/json")
-  public ResponseEntity<UserDTO> getUserByAltAuthNo(@PathVariable("altAuthNo") String altAuthNo) {
+  public ResponseEntity<UserDTO> getUserByAltAuthNo(@PathVariable("altAuthNo") String altAuthNo) throws FWMTException {
     TMUserEntity user = userService.findUserAlternateAuthNo(altAuthNo);
     if (user == null) {
-      log.warn("user not found by alternate authNo");
-      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+      log.warn(ExceptionCode.FWMT_RESOURCE_SERVICE_0003 + String.format(" - User %S not found by alternate authNo", altAuthNo));
+      throw new FWMTException(ExceptionCode.FWMT_RESOURCE_SERVICE_0003, String.format("- User %S not found by alternate authNo", altAuthNo));
     }
     UserDTO result = mapperfacade.map(user, UserDTO.class);
     return ResponseEntity.ok(result);
