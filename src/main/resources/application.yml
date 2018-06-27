@@ -30,6 +30,7 @@ spring:
 liquibase:
   url: jdbc:postgresql://localhost:5432/postgres?currentSchema=gateway
   default-schema: gateway
+  change-log: classpath:db/changelog/db.changelog-master.yml
   user: postgres
   password: postgres
 
