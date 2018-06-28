@@ -21,8 +21,9 @@ public class JobFileServiceImpl implements JobFileService {
 
   @Autowired JobFileEntityRepo jobFileEntityRepo;
 
-  @Override public List<JobFileEntity> getJobFiles() {
-    return null;
+  @Override public JobFileEntity getJobFileByName(String filename) {
+    final JobFileEntity jobFile = jobFileEntityRepo.findByfilename(filename);
+    return jobFile;
   }
 
   @Override public JobFileEntity storeJobFile(MultipartFile file) throws IOException {
