@@ -8,6 +8,7 @@ import ma.glasnost.orika.impl.generator.EclipseJdtCompilerStrategy;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Component
 public class BeanMapper extends ConfigurableMapper {
@@ -20,6 +21,8 @@ public class BeanMapper extends ConfigurableMapper {
   @Override
   protected final void configure(final MapperFactory factory) {
     factory.getConverterFactory().registerConverter(new PassThroughConverter(LocalDate.class));
+    factory.getConverterFactory().registerConverter(new PassThroughConverter(LocalDateTime.class));
+
 
   }
 
