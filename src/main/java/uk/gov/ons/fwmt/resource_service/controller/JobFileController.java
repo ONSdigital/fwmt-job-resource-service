@@ -23,15 +23,16 @@ import java.io.IOException;
 @RequestMapping("/jobFile")
 public class JobFileController {
 
-  @Autowired JobFileService jobFileService;
+  @Autowired private JobFileService jobFileService;
 
-  @Autowired MapperFacade mapperFacade;
+  @Autowired private MapperFacade mapperFacade;
 
   @RequestMapping(value = "/upload", method = RequestMethod.POST, produces = "application/json")
   public ResponseEntity<JobFileDTO> storeJobFile(@RequestParam("file") MultipartFile file)
       throws IOException, FWMTException {
     if (jobFileService.getJobFileByName(file.getOriginalFilename()) != null) {
-      throw new FWMTException(ExceptionCode.FWMT_RESOURCE_SERVICE_0008, String.format("- Job File %S already exists", file.getOriginalFilename()));
+      throw new FWMTException(ExceptionCode.FWMT_RESOURCE_SERVICE_0008,
+          String.format("- Job File %S already exists", file.getOriginalFilename()));
     }
     final JobFileEntity jobFileEntity = jobFileService.storeJobFile(file);
     final JobFileDTO result = mapperFacade.map(jobFileEntity, JobFileDTO.class);

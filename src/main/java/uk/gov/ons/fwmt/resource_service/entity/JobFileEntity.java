@@ -26,7 +26,7 @@ public class JobFileEntity {
   @Column(nullable = false)
   private String filename;
 
-  @Column(name = "file_timestamp",nullable = false)
+  @Column(name = "file_timestamp", nullable = false)
   @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
   private LocalDateTime fileTime;
 

@@ -33,11 +33,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 public class JobControllerIT {
 
-  @Autowired private MockMvc mockMvc;
-
-  @Autowired private TMJobRepo jobRepo;
-
   private static final String JOB_JSON = "{ \"tmJobId\": \"1234-5678\", \"lastAuthNo\": \"1276\" }";
+  @Autowired private MockMvc mockMvc;
+  @Autowired private TMJobRepo jobRepo;
 
   @Test
   public void getJobByJobIdIT() throws Exception {

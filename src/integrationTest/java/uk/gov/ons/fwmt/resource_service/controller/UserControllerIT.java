@@ -33,11 +33,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 public class UserControllerIT {
 
-  @Autowired private MockMvc mockMvc;
-
-  @Autowired private TMUserRepo userRepo;
-
   public static final String USER_JSON = "{ \"authNo\": \"1234\", \"tmUsername\": \"bla\", \"active\": true, \"alternateAuthNo\": \"7890\" }";
+  @Autowired private MockMvc mockMvc;
+  @Autowired private TMUserRepo userRepo;
 
   @Test
   public void createUserIT() throws Exception {

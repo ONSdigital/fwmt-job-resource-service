@@ -23,7 +23,6 @@ public class BeanMapper extends ConfigurableMapper {
     factory.getConverterFactory().registerConverter(new PassThroughConverter(LocalDate.class));
     factory.getConverterFactory().registerConverter(new PassThroughConverter(LocalDateTime.class));
 
-
   }
 
 }

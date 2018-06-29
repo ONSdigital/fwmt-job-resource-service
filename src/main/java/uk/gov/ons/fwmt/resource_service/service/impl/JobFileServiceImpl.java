@@ -11,7 +11,6 @@ import uk.gov.ons.fwmt.resource_service.service.JobFileService;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,7 +18,7 @@ import java.util.regex.Pattern;
 @Slf4j
 public class JobFileServiceImpl implements JobFileService {
 
-  @Autowired JobFileEntityRepo jobFileEntityRepo;
+  @Autowired private JobFileEntityRepo jobFileEntityRepo;
 
   @Override public JobFileEntity getJobFileByName(String filename) {
     final JobFileEntity jobFile = jobFileEntityRepo.findByfilename(filename);
@@ -34,12 +33,12 @@ public class JobFileServiceImpl implements JobFileService {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH-mm-ss'Z'");
 
     Matcher m = Pattern.compile(dateRegex).matcher(filename);
-    if(m.find()) {
+    if (m.find()) {
       fileTime = LocalDateTime.parse(m.group(), formatter);
     }
     final byte[] fileContents = file.getBytes();
 
-    JobFileEntity jobFileEntity= new JobFileEntity();
+    JobFileEntity jobFileEntity = new JobFileEntity();
 
     jobFileEntity.setFile(fileContents);
     jobFileEntity.setFilename(filename);

@@ -38,11 +38,13 @@ public class JobFileControllerIT {
   public void getJobByJobIdIT() throws Exception {
     FileInputStream fis = new FileInputStream("src/integrationTest/resources/sample_GFF_2018-06-28T16-00-00Z.csv");
     final String filename = "sample_GFF_2018-06-28T16-00-00Z.csv";
-    MockMultipartFile multipartFile = new MockMultipartFile("file", filename,"application/csv", fis);
-    mockMvc.perform(MockMvcRequestBuilders.fileUpload("/jobFile/upload").file(multipartFile).with(httpBasic("user", "password"))).andExpect(status().isCreated());
+    MockMultipartFile multipartFile = new MockMultipartFile("file", filename, "application/csv", fis);
+    mockMvc.perform(
+        MockMvcRequestBuilders.fileUpload("/jobFile/upload").file(multipartFile).with(httpBasic("user", "password")))
+        .andExpect(status().isCreated());
 
     final JobFileEntity jobFileEntity = jobFileEntityRepo.findByfilename(filename);
-    assertThat(jobFileEntity.getFileTime(), is(LocalDateTime.of(2018,06,28,16,00,00)));
+    assertThat(jobFileEntity.getFileTime(), is(LocalDateTime.of(2018, 06, 28, 16, 00, 00)));
   }
 
 }

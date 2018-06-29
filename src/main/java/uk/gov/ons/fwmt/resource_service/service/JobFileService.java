@@ -7,5 +7,6 @@ import java.io.IOException;
 
 public interface JobFileService {
   JobFileEntity getJobFileByName(String filename);
+
   JobFileEntity storeJobFile(MultipartFile file) throws IOException;
 }
