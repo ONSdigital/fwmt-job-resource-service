@@ -3,6 +3,7 @@ package uk.gov.ons.fwmt.resource_service.controller;
 import lombok.extern.slf4j.Slf4j;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,14 +28,14 @@ public class JobFileController {
   @Autowired MapperFacade mapperFacade;
 
   @RequestMapping(value = "/upload", method = RequestMethod.POST, produces = "application/json")
-  public ResponseEntity<JobFileDTO> sampleREST(@RequestParam("file") MultipartFile file)
+  public ResponseEntity<JobFileDTO> storeJobFile(@RequestParam("file") MultipartFile file)
       throws IOException, FWMTException {
     if (jobFileService.getJobFileByName(file.getOriginalFilename()) != null) {
       throw new FWMTException(ExceptionCode.FWMT_RESOURCE_SERVICE_0008, String.format("- Job File %S already exists", file.getOriginalFilename()));
     }
     final JobFileEntity jobFileEntity = jobFileService.storeJobFile(file);
     final JobFileDTO result = mapperFacade.map(jobFileEntity, JobFileDTO.class);
-    return ResponseEntity.ok(result);
+    return new ResponseEntity<>(result, HttpStatus.CREATED);
 
   }
 
