@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 @Data
 @Entity
@@ -33,4 +34,17 @@ public class JobFileEntity {
   @Column(name = "received_timestamp", nullable = false)
   @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
   private LocalDateTime fileReceivedTime;
+
+  /**
+   * Getter and Setter to fix findBug issue with Mutable object.
+   */
+  public byte[] getFile() {
+    final byte[] fileContents = Arrays.copyOf(file, file.length);
+    return fileContents;
+  }
+
+  public void setFile(byte[] file) {
+    final byte[] fileContents = Arrays.copyOf(file, file.length);
+    this.file = fileContents;
+  }
 }

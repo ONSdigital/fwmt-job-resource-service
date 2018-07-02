@@ -48,7 +48,5 @@ public class JobFileServiceImpl implements JobFileService {
     jobFileEntityRepo.save(jobFileEntity);
 
     return jobFileEntity;
-
   }
-
 }
