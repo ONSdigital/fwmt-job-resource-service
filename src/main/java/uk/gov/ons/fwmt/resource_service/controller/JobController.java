@@ -42,8 +42,10 @@ public class JobController {
   @PostMapping(produces = "application/json", consumes = "application/json")
   public ResponseEntity createJob(@RequestBody JobDTO jobDTO) throws FWMTException {
     if (jobService.findByJobId(jobDTO.getTmJobId()) != null) {
-      log.warn(ExceptionCode.FWMT_RESOURCE_SERVICE_0006 + String.format(" - Job %S already exists", jobDTO.getTmJobId()));
-      throw new FWMTException(ExceptionCode.FWMT_RESOURCE_SERVICE_0006, String.format("- Job %S already exists", jobDTO.getTmJobId()));
+      log.warn(
+          ExceptionCode.FWMT_RESOURCE_SERVICE_0006 + String.format(" - Job %S already exists", jobDTO.getTmJobId()));
+      throw new FWMTException(ExceptionCode.FWMT_RESOURCE_SERVICE_0006,
+          String.format("- Job %S already exists", jobDTO.getTmJobId()));
     }
     jobService.createJob(mapperfacade.map(jobDTO, TMJobEntity.class));
     return new ResponseEntity(HttpStatus.CREATED);
@@ -54,7 +56,8 @@ public class JobController {
     final TMJobEntity job = jobService.updateJob(mapperfacade.map(jobDTO, TMJobEntity.class));
     if (job == null) {
       log.warn(ExceptionCode.FWMT_RESOURCE_SERVICE_0002 + String.format(" - Job %S not found", jobDTO.getTmJobId()));
-      throw new FWMTException(ExceptionCode.FWMT_RESOURCE_SERVICE_0002, String.format("- Job %S not found", jobDTO.getTmJobId()));
+      throw new FWMTException(ExceptionCode.FWMT_RESOURCE_SERVICE_0002,
+          String.format("- Job %S not found", jobDTO.getTmJobId()));
     }
     return ResponseEntity.ok(jobDTO);
   }
@@ -64,7 +67,8 @@ public class JobController {
     final TMJobEntity jobToDelete = jobService.findByJobId(jobDTO.getTmJobId());
     if (jobToDelete == null) {
       log.warn(ExceptionCode.FWMT_RESOURCE_SERVICE_0002 + String.format(" - Job %S not found", jobDTO.getTmJobId()));
-      throw new FWMTException(ExceptionCode.FWMT_RESOURCE_SERVICE_0002, String.format("- Job %S not found", jobDTO.getTmJobId()));
+      throw new FWMTException(ExceptionCode.FWMT_RESOURCE_SERVICE_0002,
+          String.format("- Job %S not found", jobDTO.getTmJobId()));
     }
     jobService.deleteJob(jobToDelete);
     return ResponseEntity.ok(jobDTO);

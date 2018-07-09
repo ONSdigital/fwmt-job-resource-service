@@ -134,3 +134,12 @@ databaseChangeLog:
           path: 15_Extra_Field_Periods.sql
           relativeToChangelogFile: true
           splitStatements: false
+ - changeSet:
+    id: v16
+    author: Gareth Turner
+    comment: Added table for storing job file
+    changes:
+      - sqlFile:
+          path: 16_Add_Job_file.sql
+          relativeToChangelogFile: true
+          splitStatements: false

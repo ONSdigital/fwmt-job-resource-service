@@ -35,20 +35,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(MockitoJUnitRunner.class)
 public class UserControllerTest {
 
+  public static final String USER_JSON = "{ \"authNo\": \"1234\", \"tmUsername\": \"bla\", \"active\": true, \"alternateAuthNo\": \"7890\" }";
   @Mock
   private TMUserService userService;
-
   @Mock
   private MapperFacade mapperFacade;
-
   @InjectMocks
   private UserController userController;
-
   private MockMvc mockMvc;
-
   private UserDTO userDTO = new UserDTO();
-
-  public static final String USER_JSON = "{ \"authNo\": \"1234\", \"tmUsername\": \"bla\", \"active\": true, \"alternateAuthNo\": \"7890\" }";
 
   @Before
   public void setUp() throws Exception {
@@ -82,37 +77,43 @@ public class UserControllerTest {
   @Test
   public void createUser() throws Exception {
     when(userService.findUserAuthNo(any())).thenReturn(null);
-    mockMvc.perform(post("/users").contentType(MediaType.APPLICATION_JSON).content(USER_JSON)).andExpect(status().isCreated());
+    mockMvc.perform(post("/users").contentType(MediaType.APPLICATION_JSON).content(USER_JSON))
+        .andExpect(status().isCreated());
   }
 
   @Test
   public void createUserAuthNoAlreadyUsed() throws Exception {
     when(userService.findUserAuthNo(any())).thenReturn(new TMUserEntity());
-    mockMvc.perform(post("/users").contentType(MediaType.APPLICATION_JSON).content(USER_JSON)).andExpect(status().isConflict());
+    mockMvc.perform(post("/users").contentType(MediaType.APPLICATION_JSON).content(USER_JSON))
+        .andExpect(status().isConflict());
   }
 
   @Test
   public void updateUserNotFound() throws Exception {
     when(userService.updateUser(any())).thenReturn(null);
-    mockMvc.perform(put("/users").contentType(MediaType.APPLICATION_JSON).content(USER_JSON)).andExpect(status().isNotFound());
+    mockMvc.perform(put("/users").contentType(MediaType.APPLICATION_JSON).content(USER_JSON))
+        .andExpect(status().isNotFound());
   }
 
   @Test
   public void updateUser() throws Exception {
     when(userService.updateUser(any())).thenReturn(new TMUserEntity());
-    mockMvc.perform(put("/users").contentType(MediaType.APPLICATION_JSON).content(USER_JSON)).andExpect(status().isOk());
+    mockMvc.perform(put("/users").contentType(MediaType.APPLICATION_JSON).content(USER_JSON))
+        .andExpect(status().isOk());
   }
 
   @Test
   public void deleteUser() throws Exception {
     when(userService.findUserAuthNo(any())).thenReturn(new TMUserEntity());
-    mockMvc.perform(delete("/users").contentType(MediaType.APPLICATION_JSON).content(USER_JSON)).andExpect(status().isOk());
+    mockMvc.perform(delete("/users").contentType(MediaType.APPLICATION_JSON).content(USER_JSON))
+        .andExpect(status().isOk());
   }
 
   @Test
   public void deleteUserNotExist() throws Exception {
     when(userService.findUserAuthNo(any())).thenReturn(null);
-    mockMvc.perform(delete("/users").contentType(MediaType.APPLICATION_JSON).content(USER_JSON)).andExpect(status().isNotFound());
+    mockMvc.perform(delete("/users").contentType(MediaType.APPLICATION_JSON).content(USER_JSON))
+        .andExpect(status().isNotFound());
   }
 
   @Test
@@ -133,7 +134,8 @@ public class UserControllerTest {
   public void getUserByAltAuthNo() throws Exception {
     when(userService.findUserAlternateAuthNo("1234")).thenReturn(new TMUserEntity());
     when(mapperFacade.map(any(), any())).thenReturn(userDTO);
-    mockMvc.perform(get("/users/alternative/1234")).andExpect(status().isOk()).andExpect(jsonPath("$.authNo", is("1234")))
+    mockMvc.perform(get("/users/alternative/1234")).andExpect(status().isOk())
+        .andExpect(jsonPath("$.authNo", is("1234")))
         .andExpect(jsonPath("$.tmUsername", is("bla"))).andExpect(jsonPath("$.active", is(true)));
   }
 

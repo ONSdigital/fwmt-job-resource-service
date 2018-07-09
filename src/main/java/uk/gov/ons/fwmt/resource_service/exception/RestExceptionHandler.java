@@ -45,6 +45,7 @@ public class RestExceptionHandler {
     case FWMT_RESOURCE_SERVICE_0005:
     case FWMT_RESOURCE_SERVICE_0006:
     case FWMT_RESOURCE_SERVICE_0007:
+    case FWMT_RESOURCE_SERVICE_0008:
       status = HttpStatus.CONFLICT;
       break;
     case FWMT_RESOURCE_SERVICE_0001:

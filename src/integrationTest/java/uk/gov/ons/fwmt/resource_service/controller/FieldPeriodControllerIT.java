@@ -35,12 +35,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 public class FieldPeriodControllerIT {
 
-  @Autowired private MockMvc mockMvc;
-
-  @Autowired private FieldPeriodRepo fieldPeriodRepo;
-
   private static final String FIELD_PERIOD_JSON = "{\"startDate\": \"2018-01-12\", \"endDate\": \"2018-01-27\", \"fieldPeriod\": \"95B\"}";
   private static final String FIELD_PERIOD_UPDATE_JSON = "{\"startDate\": \"2017-01-12\", \"endDate\": \"2018-02-27\", \"fieldPeriod\": \"81A\"}";
+  @Autowired private MockMvc mockMvc;
+  @Autowired private FieldPeriodRepo fieldPeriodRepo;
 
   @Test
   public void getFieldPeriodIT() throws Exception {

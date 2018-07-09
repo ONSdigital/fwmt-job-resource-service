@@ -45,7 +45,8 @@ public class FieldPeriodController {
     final FieldPeriodEntity fieldPeriodEntity = fieldPeriodService.findFieldPeriod(fieldPeriod);
     if (fieldPeriodEntity == null) {
       log.warn(ExceptionCode.FWMT_RESOURCE_SERVICE_0004 + String.format(" - Field Period %S not found", fieldPeriod));
-      throw new FWMTException(ExceptionCode.FWMT_RESOURCE_SERVICE_0004, String.format("- Field Period %S not found", fieldPeriod));
+      throw new FWMTException(ExceptionCode.FWMT_RESOURCE_SERVICE_0004,
+          String.format("- Field Period %S not found", fieldPeriod));
     }
     final FieldPeriodDTO result = mapperFacade.map(fieldPeriodEntity, FieldPeriodDTO.class);
     return ResponseEntity.ok(result);
@@ -54,8 +55,10 @@ public class FieldPeriodController {
   @PostMapping(consumes = "application/json", produces = "application/json")
   public ResponseEntity createFieldPeriod(@RequestBody FieldPeriodDTO fieldPeriodDTO) throws FWMTException {
     if (fieldPeriodService.findFieldPeriod(fieldPeriodDTO.getFieldPeriod()) != null) {
-      log.warn(ExceptionCode.FWMT_RESOURCE_SERVICE_0007 + String.format(" - Field Period %S already exists", fieldPeriodDTO.getFieldPeriod()));
-      throw new FWMTException(ExceptionCode.FWMT_RESOURCE_SERVICE_0007, String.format("- Field Period %S already exists", fieldPeriodDTO.getFieldPeriod()));
+      log.warn(ExceptionCode.FWMT_RESOURCE_SERVICE_0007 + String
+          .format(" - Field Period %S already exists", fieldPeriodDTO.getFieldPeriod()));
+      throw new FWMTException(ExceptionCode.FWMT_RESOURCE_SERVICE_0007,
+          String.format("- Field Period %S already exists", fieldPeriodDTO.getFieldPeriod()));
     }
     fieldPeriodService.createFieldPeriod(mapperFacade.map(fieldPeriodDTO, FieldPeriodEntity.class));
     return new ResponseEntity(HttpStatus.CREATED);
@@ -67,8 +70,10 @@ public class FieldPeriodController {
     FieldPeriodEntity fieldPeriodEntity = fieldPeriodService
         .updateFieldPeriod(mapperFacade.map(fieldPeriodDTO, FieldPeriodEntity.class));
     if (fieldPeriodEntity == null) {
-      log.warn(ExceptionCode.FWMT_RESOURCE_SERVICE_0004 + String.format(" - Field Period %S not found", fieldPeriodDTO.getFieldPeriod()));
-      throw new FWMTException(ExceptionCode.FWMT_RESOURCE_SERVICE_0004, String.format("- Field Period %S not found", fieldPeriodDTO.getFieldPeriod()));
+      log.warn(ExceptionCode.FWMT_RESOURCE_SERVICE_0004 + String
+          .format(" - Field Period %S not found", fieldPeriodDTO.getFieldPeriod()));
+      throw new FWMTException(ExceptionCode.FWMT_RESOURCE_SERVICE_0004,
+          String.format("- Field Period %S not found", fieldPeriodDTO.getFieldPeriod()));
     }
     return ResponseEntity.ok(fieldPeriodDTO);
   }
@@ -78,8 +83,10 @@ public class FieldPeriodController {
       throws FWMTException {
     final FieldPeriodEntity fieldPeriodToDelete = fieldPeriodService.findFieldPeriod(fieldPeriodDTO.getFieldPeriod());
     if (fieldPeriodToDelete == null) {
-      log.warn(ExceptionCode.FWMT_RESOURCE_SERVICE_0004 + String.format(" - Field Period %S not found", fieldPeriodDTO.getFieldPeriod()));
-      throw new FWMTException(ExceptionCode.FWMT_RESOURCE_SERVICE_0004, String.format("- Field Period %S not found", fieldPeriodDTO.getFieldPeriod()));
+      log.warn(ExceptionCode.FWMT_RESOURCE_SERVICE_0004 + String
+          .format(" - Field Period %S not found", fieldPeriodDTO.getFieldPeriod()));
+      throw new FWMTException(ExceptionCode.FWMT_RESOURCE_SERVICE_0004,
+          String.format("- Field Period %S not found", fieldPeriodDTO.getFieldPeriod()));
     }
     fieldPeriodService.deleteFieldPeriod(fieldPeriodToDelete);
     return ResponseEntity.ok(fieldPeriodDTO);
