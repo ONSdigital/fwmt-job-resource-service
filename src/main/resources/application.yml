@@ -53,6 +53,8 @@ security.user:
   name: "user"
   password: "password"
 
+endpoints.env.keys-to-sanitize:
+
 service:
   resource:
     username: "user"
