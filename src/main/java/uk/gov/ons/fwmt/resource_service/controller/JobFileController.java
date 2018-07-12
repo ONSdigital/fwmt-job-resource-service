@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import uk.gov.ons.fwmt.resource_service.data.dto.JobFileDTO;
 import uk.gov.ons.fwmt.resource_service.entity.JobFileEntity;
-import uk.gov.ons.fwmt.resource_service.exception.ExceptionCode;
 import uk.gov.ons.fwmt.resource_service.exception.FWMTException;
 import uk.gov.ons.fwmt.resource_service.service.JobFileService;
 
@@ -30,10 +29,6 @@ public class JobFileController {
   @RequestMapping(value = "/upload", method = RequestMethod.POST, produces = "application/json")
   public ResponseEntity<JobFileDTO> storeJobFile(@RequestParam("file") MultipartFile file)
       throws IOException, FWMTException {
-    if (jobFileService.getJobFileByName(file.getOriginalFilename()) != null) {
-      throw new FWMTException(ExceptionCode.FWMT_RESOURCE_SERVICE_0008,
-          String.format("- Job File %S already exists", file.getOriginalFilename()));
-    }
     final JobFileEntity jobFileEntity = jobFileService.storeJobFile(file);
     final JobFileDTO result = mapperFacade.map(jobFileEntity, JobFileDTO.class);
     return new ResponseEntity<>(result, HttpStatus.CREATED);

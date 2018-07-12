@@ -1,0 +1,1 @@
+ALTER TABLE gateway.input_file DROP CONSTRAINT input_file_filename_key;

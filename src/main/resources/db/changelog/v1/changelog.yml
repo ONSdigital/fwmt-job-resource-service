@@ -143,3 +143,12 @@ databaseChangeLog:
           path: 16_Add_Job_file.sql
           relativeToChangelogFile: true
           splitStatements: false
+ - changeSet:
+    id: v17
+    author: Gareth Turner
+    comment: Allow files with same name to be stored
+    changes:
+      - sqlFile:
+          path: 17_Non_Unique_File_Name.sql
+          relativeToChangelogFile: true
+          splitStatements: false
