@@ -49,10 +49,4 @@ public class JobFileControllerTest {
     mockMvc.perform(MockMvcRequestBuilders.fileUpload("/jobFile/upload").file(file)).andExpect(status().isCreated());
   }
 
-  @Test
-  public void storeJobFileAlreadyExists() throws Exception {
-    when(jobFileService.getJobFileByName("bla")).thenReturn(new JobFileEntity());
-    MockMultipartFile file = new MockMultipartFile("file", "bla", "csv", "test".getBytes());
-    mockMvc.perform(MockMvcRequestBuilders.fileUpload("/jobFile/upload").file(file)).andExpect(status().isConflict());
-  }
 }
