@@ -152,3 +152,12 @@ databaseChangeLog:
           path: 17_Non_Unique_File_Name.sql
           relativeToChangelogFile: true
           splitStatements: false
+- changeSet:
+    id: v18
+    author: Chris Hardman
+    comment: add last updated to job table
+    changes:
+      - sqlFile:
+          path: 18_Add_last_update_to_jobs.sql
+          relativeToChangelogFile: true
+          splitStatements: false
