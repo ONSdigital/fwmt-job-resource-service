@@ -1,4 +1,4 @@
 SET SCHEMA 'gateway';
 
-ALTER TABLE gateway.jobs
-    ADD COLUMN TIMESTAMP last_update;
+ALTER TABLE gateway.tm_jobs
+    ADD COLUMN last_update TIMESTAMP;
