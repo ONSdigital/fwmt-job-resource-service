@@ -12,4 +12,5 @@ import lombok.NoArgsConstructor;
 public class JobDTO {
   private String tmJobId;
   private String lastAuthNo;
+  private String lastUpdated;
 }

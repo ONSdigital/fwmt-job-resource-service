@@ -22,4 +22,7 @@ public class TMJobEntity {
 
   @Column(nullable = false)
   private String lastAuthNo;
+
+  @Column(nullable = false)
+  private String lastUpdated;
 }
