@@ -19,4 +19,6 @@ public class JobFileDTO {
 
   private LocalDateTime fileReceivedTime;
 
+  private boolean validated;
+
 }

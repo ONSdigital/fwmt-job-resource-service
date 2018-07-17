@@ -8,5 +8,5 @@ import java.io.IOException;
 public interface JobFileService {
   JobFileEntity getJobFileByName(String filename);
 
-  JobFileEntity storeJobFile(MultipartFile file) throws IOException;
+  JobFileEntity storeJobFile(MultipartFile file, boolean validated) throws IOException;
 }
