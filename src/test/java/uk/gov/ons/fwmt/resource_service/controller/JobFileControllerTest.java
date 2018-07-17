@@ -13,7 +13,6 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import uk.gov.ons.fwmt.resource_service.entity.JobFileEntity;
 import uk.gov.ons.fwmt.resource_service.exception.RestExceptionHandler;
 import uk.gov.ons.fwmt.resource_service.mapper.CustomObjectMapper;
 import uk.gov.ons.fwmt.resource_service.service.JobFileService;
@@ -46,7 +45,7 @@ public class JobFileControllerTest {
   public void storeJobFile() throws Exception {
     when(jobFileService.getJobFileByName(any())).thenReturn(null);
     MockMultipartFile file = new MockMultipartFile("file", "bla", "csv", "test".getBytes());
-    mockMvc.perform(MockMvcRequestBuilders.fileUpload("/jobFile/upload").file(file)).andExpect(status().isCreated());
+    mockMvc.perform(MockMvcRequestBuilders.fileUpload("/jobFile/upload").file(file).param("validated", "true")).andExpect(status().isCreated());
   }
 
 }

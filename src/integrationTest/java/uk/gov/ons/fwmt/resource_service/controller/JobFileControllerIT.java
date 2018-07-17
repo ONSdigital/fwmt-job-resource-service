@@ -40,11 +40,12 @@ public class JobFileControllerIT {
     final String filename = "sample_GFF_2018-06-28T16-00-00Z.csv";
     MockMultipartFile multipartFile = new MockMultipartFile("file", filename, "application/csv", fis);
     mockMvc.perform(
-        MockMvcRequestBuilders.fileUpload("/jobFile/upload").file(multipartFile).with(httpBasic("user", "password")))
+        MockMvcRequestBuilders.fileUpload("/jobFile/upload").file(multipartFile).param("validated", "true").with(httpBasic("user", "password")))
         .andExpect(status().isCreated());
 
     final JobFileEntity jobFileEntity = jobFileEntityRepo.findByfilename(filename);
     assertThat(jobFileEntity.getFileTime(), is(LocalDateTime.of(2018, 06, 28, 16, 00, 00)));
+    assertThat(jobFileEntity.isValidated(), is(true));
   }
 
 }
