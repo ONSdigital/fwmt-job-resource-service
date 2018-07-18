@@ -1,0 +1,1 @@
+ALTER TABLE gateway.input_file ADD validated boolean DEFAULT false;

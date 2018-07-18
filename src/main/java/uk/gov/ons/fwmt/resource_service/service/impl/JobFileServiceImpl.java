@@ -25,7 +25,7 @@ public class JobFileServiceImpl implements JobFileService {
     return jobFile;
   }
 
-  @Override public JobFileEntity storeJobFile(MultipartFile file) throws IOException {
+  @Override public JobFileEntity storeJobFile(MultipartFile file, boolean validated) throws IOException {
     final String dateRegex = "\\d{4}-\\d{2}-\\d{2}T\\d{2}-\\d{2}-\\d{2}Z";
     final String filename = file.getOriginalFilename();
     final LocalDateTime fileReceivedTime = LocalDateTime.now();
@@ -44,6 +44,7 @@ public class JobFileServiceImpl implements JobFileService {
     jobFileEntity.setFilename(filename);
     jobFileEntity.setFileReceivedTime(fileReceivedTime);
     jobFileEntity.setFileTime(fileTime);
+    jobFileEntity.setValidated(validated);
 
     jobFileEntityRepo.save(jobFileEntity);
 

@@ -152,3 +152,12 @@ databaseChangeLog:
           path: 17_Non_Unique_File_Name.sql
           relativeToChangelogFile: true
           splitStatements: false
+ - changeSet:
+    id: v18
+    author: Gareth Turner
+    comment: Add column for checking if file has been sucesfully validated
+    changes:
+      - sqlFile:
+          path: 18_Add_Validated_File_Column.sql
+          relativeToChangelogFile: true
+          splitStatements: false
