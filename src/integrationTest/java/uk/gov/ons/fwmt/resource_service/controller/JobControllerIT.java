@@ -33,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 public class JobControllerIT {
 
-  private static final String JOB_JSON = "{ \"tmJobId\": \"1234-5678\", \"lastAuthNo\": \"1276\" }";
+  private static final String JOB_JSON = "{ \"tmJobId\": \"1234-5678\", \"lastAuthNo\": \"1276\" , \"lastUpdated\": \"2018-08-01T01:06:01\" }";
   @Autowired private MockMvc mockMvc;
   @Autowired private TMJobRepo jobRepo;
 
