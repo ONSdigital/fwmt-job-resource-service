@@ -40,10 +40,13 @@ public class JobControllerIT {
     TMJobEntity jobEntity = new TMJobEntity();
     jobEntity.setTmJobId("1234-5678");
     jobEntity.setLastAuthNo("1234");
+    jobEntity.setLastUpdated(LocalDateTime.parse("2018-08-01T01:06:01",DateTimeFormatter.ISO_LOCAL_DATE_TIME));
     jobRepo.save(jobEntity);
     mockMvc.perform(get("/jobs/1234-5678").with(httpBasic("user", "password"))).andExpect(status().isOk())
-        .andExpect(jsonPath("$.tmJobId", is("1234-5678")))
-        .andExpect(jsonPath("$.lastAuthNo", is("1234")));
+            .andExpect(jsonPath("$.tmJobId", is("1234-5678")))
+            .andExpect(jsonPath("$.lastAuthNo", is("1234")))
+            .andExpect(jsonPath("$.lastUpdated", is("2018-08-01T01:06:01")));
+
   }
 
   @Test
@@ -51,6 +54,7 @@ public class JobControllerIT {
     TMJobEntity jobEntity = new TMJobEntity();
     jobEntity.setTmJobId("1234-5678");
     jobEntity.setLastAuthNo("1234");
+    jobEntity.setLastUpdated(LocalDateTime.parse("2018-08-01T01:06:01",DateTimeFormatter.ISO_LOCAL_DATE_TIME));
     jobRepo.save(jobEntity);
     mockMvc.perform(
         (put("/jobs")).contentType(MediaType.APPLICATION_JSON).content(JOB_JSON).with(httpBasic("user", "password")));
@@ -63,6 +67,7 @@ public class JobControllerIT {
     TMJobEntity jobEntity = new TMJobEntity();
     jobEntity.setTmJobId("1234-5678");
     jobEntity.setLastAuthNo("1276");
+    jobEntity.setLastUpdated(LocalDateTime.parse("2018-08-01T01:06:01",DateTimeFormatter.ISO_LOCAL_DATE_TIME));
     jobRepo.save(jobEntity);
     mockMvc.perform(
         delete("/jobs").contentType(MediaType.APPLICATION_JSON).content(JOB_JSON).with(httpBasic("user", "password")));
