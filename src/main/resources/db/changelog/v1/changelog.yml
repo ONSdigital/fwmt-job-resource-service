@@ -161,7 +161,6 @@ databaseChangeLog:
           path: 18_Add_Validated_File_Column.sql
           relativeToChangelogFile: true
           splitStatements: false
-          
  - changeSet:
     id: v19
     author: Chris Hardman
