@@ -35,6 +35,9 @@ public class JobFileEntity {
   @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
   private LocalDateTime fileReceivedTime;
 
+  @Column(nullable = false)
+  private boolean validated;
+
   /**
    * Getter and Setter to fix findBug issue with Mutable object.
    */

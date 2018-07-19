@@ -27,9 +27,9 @@ public class JobFileController {
   @Autowired private MapperFacade mapperFacade;
 
   @RequestMapping(value = "/upload", method = RequestMethod.POST, produces = "application/json")
-  public ResponseEntity<JobFileDTO> storeJobFile(@RequestParam("file") MultipartFile file)
+  public ResponseEntity<JobFileDTO> storeJobFile(@RequestParam("file") MultipartFile file, boolean validated)
       throws IOException, FWMTException {
-    final JobFileEntity jobFileEntity = jobFileService.storeJobFile(file);
+    final JobFileEntity jobFileEntity = jobFileService.storeJobFile(file, validated);
     final JobFileDTO result = mapperFacade.map(jobFileEntity, JobFileDTO.class);
     return new ResponseEntity<>(result, HttpStatus.CREATED);
 
