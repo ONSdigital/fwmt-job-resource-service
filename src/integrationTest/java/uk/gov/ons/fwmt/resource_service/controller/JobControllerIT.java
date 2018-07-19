@@ -91,7 +91,7 @@ public class JobControllerIT {
     jobEntity2.setLastAuthNo("1243");
     jobEntity2.setLastUpdated(LocalDateTime.parse("2018-08-01T01:06:01",DateTimeFormatter.ISO_LOCAL_DATE_TIME));
     jobRepo.save(jobEntity2);
-    mockMvc.perform(get("/jobs").with(httpBasic("user", "password"))).andExpect(jsonPath("$", hasSize(3)));
+    mockMvc.perform(get("/jobs").with(httpBasic("user", "password"))).andExpect(jsonPath("$", hasSize(2)));
   }
 
   @Test
