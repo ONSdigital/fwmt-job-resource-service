@@ -16,10 +16,12 @@ import uk.gov.ons.fwmt.resource_service.repo.JobFileEntityRepo;
 
 import java.io.FileInputStream;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -35,7 +37,7 @@ public class JobFileControllerIT {
   @Autowired private JobFileEntityRepo jobFileEntityRepo;
 
   @Test
-  public void getJobByJobIdIT() throws Exception {
+  public void testUploadFile() throws Exception {
     FileInputStream fis = new FileInputStream("src/integrationTest/resources/sample_GFF_2018-06-28T16-00-00Z.csv");
     final String filename = "sample_GFF_2018-06-28T16-00-00Z.csv";
     MockMultipartFile multipartFile = new MockMultipartFile("file", filename, "application/csv", fis);
@@ -43,8 +45,25 @@ public class JobFileControllerIT {
         MockMvcRequestBuilders.fileUpload("/jobFile/upload").file(multipartFile).with(httpBasic("user", "password")))
         .andExpect(status().isCreated());
 
-    final JobFileEntity jobFileEntity = jobFileEntityRepo.findByfilename(filename);
-    assertThat(jobFileEntity.getFileTime(), is(LocalDateTime.of(2018, 06, 28, 16, 00, 00)));
+    final Optional<JobFileEntity> jobFileEntity = jobFileEntityRepo.findByfilename(filename);
+    assertThat(jobFileEntity.get().getFileTime(), is(LocalDateTime.of(2018, 06, 28, 16, 00, 00)));
   }
 
+    @Test
+    public void getJobFileByfileNameShouldReturnOkIfSucessful() throws Exception {
+        JobFileEntity jobFileEntity = new JobFileEntity();
+        jobFileEntity.setFile(new byte[10]);
+        jobFileEntity.setFilename("fileTest");
+        jobFileEntityRepo.save(jobFileEntity);
+        mockMvc.perform(get("/jobFile/fileTest").with(httpBasic("user", "password"))).andExpect(status().isOk());
+    }
+
+    @Test
+    public void getJobFileByfileNameShouldReturn404IfNotFound() throws Exception {
+        JobFileEntity jobFileEntity = new JobFileEntity();
+        jobFileEntity.setFile(new byte[10]);
+        jobFileEntity.setFilename("fileTest");
+        jobFileEntityRepo.save(jobFileEntity);
+        mockMvc.perform(get("/jobFile/fileNotFound").with(httpBasic("user", "password"))).andExpect(status().isNotFound());
+    }
 }

@@ -11,6 +11,7 @@ import uk.gov.ons.fwmt.resource_service.service.JobFileService;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,8 +21,8 @@ public class JobFileServiceImpl implements JobFileService {
 
   @Autowired private JobFileEntityRepo jobFileEntityRepo;
 
-  @Override public JobFileEntity getJobFileByName(String filename) {
-    final JobFileEntity jobFile = jobFileEntityRepo.findByfilename(filename);
+  @Override public Optional<JobFileEntity> getJobFileByName(String filename) {
+    final Optional<JobFileEntity> jobFile = jobFileEntityRepo.findByfilename(filename);
     return jobFile;
   }
 
