@@ -69,7 +69,7 @@ public class JobControllerTest {
     when(mapperFacade.mapAsList(jobs, JobDTO.class)).thenReturn(result);
     mockMvc.perform(get("/jobs")).andExpect(status().isOk()).andExpect(jsonPath("$[0].lastAuthNo", is("1234")))
         .andExpect(jsonPath("$[0].tmJobId", is("4567")))
-        .andExpect(jsonPath("$[0].lastUpdated", is("2018-08-01T01:06:01")));
+        .andExpect(jsonPath("$[0].lastUpdated", is("2018-01-01T12:45:00")));
   }
 
   @Test
@@ -119,7 +119,7 @@ public class JobControllerTest {
     when(mapperFacade.map(any(), any())).thenReturn(jobDTO);
     mockMvc.perform(get("/jobs/1234")).andExpect(status().isOk()).andExpect(jsonPath("$.lastAuthNo", is("1234")))
         .andExpect(jsonPath("$.tmJobId", is("4567")))
-        .andExpect(jsonPath("$.lastUpdated", is("2018-08-01T01:06:01")));
+        .andExpect(jsonPath("$.lastUpdated", is("2018-01-01T12:45:00")));
   }
 
   @Test
