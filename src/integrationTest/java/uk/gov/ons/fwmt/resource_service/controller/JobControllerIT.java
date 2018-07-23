@@ -13,15 +13,13 @@ import uk.gov.ons.fwmt.resource_service.ApplicationConfig;
 import uk.gov.ons.fwmt.resource_service.entity.TMJobEntity;
 import uk.gov.ons.fwmt.resource_service.repo.TMJobRepo;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.isA;
+import static org.hamcrest.Matchers.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -33,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 public class JobControllerIT {
 
-  private static final String JOB_JSON = "{ \"tmJobId\": \"1234-5678\", \"lastAuthNo\": \"1276\" }";
+  private static final String JOB_JSON = "{ \"tmJobId\": \"1234-5678\", \"lastAuthNo\": \"1276\" , \"lastUpdated\": \"2018-08-01T01:06:01\" }";
   @Autowired private MockMvc mockMvc;
   @Autowired private TMJobRepo jobRepo;
 
@@ -42,10 +40,13 @@ public class JobControllerIT {
     TMJobEntity jobEntity = new TMJobEntity();
     jobEntity.setTmJobId("1234-5678");
     jobEntity.setLastAuthNo("1234");
+    jobEntity.setLastUpdated(LocalDateTime.parse("2018-08-01T01:06:01",DateTimeFormatter.ISO_LOCAL_DATE_TIME));
     jobRepo.save(jobEntity);
     mockMvc.perform(get("/jobs/1234-5678").with(httpBasic("user", "password"))).andExpect(status().isOk())
-        .andExpect(jsonPath("$.tmJobId", is("1234-5678")))
-        .andExpect(jsonPath("$.lastAuthNo", is("1234")));
+            .andExpect(jsonPath("$.tmJobId", is("1234-5678")))
+            .andExpect(jsonPath("$.lastAuthNo", is("1234")))
+            .andExpect(jsonPath("$.lastUpdated", is("2018-08-01T01:06:01")));
+
   }
 
   @Test
@@ -53,6 +54,7 @@ public class JobControllerIT {
     TMJobEntity jobEntity = new TMJobEntity();
     jobEntity.setTmJobId("1234-5678");
     jobEntity.setLastAuthNo("1234");
+    jobEntity.setLastUpdated(LocalDateTime.parse("2018-08-01T01:06:01",DateTimeFormatter.ISO_LOCAL_DATE_TIME));
     jobRepo.save(jobEntity);
     mockMvc.perform(
         (put("/jobs")).contentType(MediaType.APPLICATION_JSON).content(JOB_JSON).with(httpBasic("user", "password")));
@@ -65,6 +67,7 @@ public class JobControllerIT {
     TMJobEntity jobEntity = new TMJobEntity();
     jobEntity.setTmJobId("1234-5678");
     jobEntity.setLastAuthNo("1276");
+    jobEntity.setLastUpdated(LocalDateTime.parse("2018-08-01T01:06:01",DateTimeFormatter.ISO_LOCAL_DATE_TIME));
     jobRepo.save(jobEntity);
     mockMvc.perform(
         delete("/jobs").contentType(MediaType.APPLICATION_JSON).content(JOB_JSON).with(httpBasic("user", "password")));
@@ -82,13 +85,16 @@ public class JobControllerIT {
 
   @Test
   public void getJobsIT() throws Exception {
+
     TMJobEntity jobEntity1 = new TMJobEntity();
     jobEntity1.setTmJobId("1234-5678");
     jobEntity1.setLastAuthNo("1234");
+    jobEntity1.setLastUpdated(LocalDateTime.parse("2018-08-01T01:06:01",DateTimeFormatter.ISO_LOCAL_DATE_TIME));
     jobRepo.save(jobEntity1);
     TMJobEntity jobEntity2 = new TMJobEntity();
     jobEntity2.setTmJobId("1243-8765");
     jobEntity2.setLastAuthNo("1243");
+    jobEntity2.setLastUpdated(LocalDateTime.parse("2018-08-01T01:06:01",DateTimeFormatter.ISO_LOCAL_DATE_TIME));
     jobRepo.save(jobEntity2);
     mockMvc.perform(get("/jobs").with(httpBasic("user", "password"))).andExpect(jsonPath("$", hasSize(2)));
   }

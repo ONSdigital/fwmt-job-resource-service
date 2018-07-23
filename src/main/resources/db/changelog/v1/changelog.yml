@@ -161,3 +161,12 @@ databaseChangeLog:
           path: 18_Add_Validated_File_Column.sql
           relativeToChangelogFile: true
           splitStatements: false
+ - changeSet:
+    id: v19
+    author: Chris Hardman
+    comment: add last updated to job table
+    changes:
+      - sqlFile:
+          path: 19_Add_last_updated_to_jobs.sql
+          relativeToChangelogFile: true
+          splitStatements: false

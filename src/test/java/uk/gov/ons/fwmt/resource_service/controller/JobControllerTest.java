@@ -18,24 +18,21 @@ import uk.gov.ons.fwmt.resource_service.exception.RestExceptionHandler;
 import uk.gov.ons.fwmt.resource_service.mapper.CustomObjectMapper;
 import uk.gov.ons.fwmt.resource_service.service.TMJobService;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class JobControllerTest {
 
-  public static final String JOB_JSON = "{ \"tmJobId\": \"123456789\", \"lastAuthNo\": \"1276\" }";
+  public static final String JOB_JSON = "{ \"tmJobId\": \"123456789\", \"lastAuthNo\": \"1276\", \"lastUpdated\": \"2018-08-01T01:06:01\" }";
   @Mock private TMJobService jobService;
   @Mock private MapperFacade mapperFacade;
   @InjectMocks private JobController jobController;
@@ -49,7 +46,10 @@ public class JobControllerTest {
         .setControllerAdvice(new RestExceptionHandler())
         .build();
     MockitoAnnotations.initMocks(this);
-    jobDTO = JobDTO.builder().lastAuthNo("1234").tmJobId("4567").build();
+
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy HH:mm:ss");
+
+    jobDTO = JobDTO.builder().lastAuthNo("1234").tmJobId("4567").lastUpdated(LocalDateTime.parse("01/01/18 12:45:00",formatter)).build();
   }
 
   @Test
@@ -68,7 +68,8 @@ public class JobControllerTest {
     when(jobService.findJobs()).thenReturn(jobs);
     when(mapperFacade.mapAsList(jobs, JobDTO.class)).thenReturn(result);
     mockMvc.perform(get("/jobs")).andExpect(status().isOk()).andExpect(jsonPath("$[0].lastAuthNo", is("1234")))
-        .andExpect(jsonPath("$[0].tmJobId", is("4567")));
+        .andExpect(jsonPath("$[0].tmJobId", is("4567")))
+        .andExpect(jsonPath("$[0].lastUpdated", is("2018-01-01T12:45:00")));
   }
 
   @Test
@@ -117,7 +118,8 @@ public class JobControllerTest {
     when(jobService.findByJobId("1234")).thenReturn(new TMJobEntity());
     when(mapperFacade.map(any(), any())).thenReturn(jobDTO);
     mockMvc.perform(get("/jobs/1234")).andExpect(status().isOk()).andExpect(jsonPath("$.lastAuthNo", is("1234")))
-        .andExpect(jsonPath("$.tmJobId", is("4567")));
+        .andExpect(jsonPath("$.tmJobId", is("4567")))
+        .andExpect(jsonPath("$.lastUpdated", is("2018-01-01T12:45:00")));
   }
 
   @Test
