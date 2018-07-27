@@ -1,33 +1,36 @@
-
 language: java
 jdk: oraclejdk8
-
 services:
   - postgresql
-
 addons:
-  postgresql: "9.6"
-
+  postgresql: '9.6'
 script:
   - "./gradlew check"
-
 after_success:
   - bash <(curl -s https://codecov.io/bash)
-
+env:
+  global:
+    - secure: Nq9tI0s4JpHZakclIpeebndC31CUahC6jwLKMFWuKIYRiBEhPbFva8ZKK0yzyyRZvYg0Xuevv+VEdqItoeYDnCKJaTJ4Fpipar7y9IKhIpSf02JmRNqKGOPq9q8UptW9igzpR6MNWs+5mBbQsOJOKNtAQhq+CJMiGmlnBXfbDuUPdgkpxbrgxW+SrcxBRTe5B7vYmQjbGGIyoEn9N0PFYIVy+yTTaVqWQDCc2AzG/pODGKlni8CCbUHVuLRJVVtgGy7CL1GcBUJQWDcsEJxOsJRpWDZlShkCLaWMNxMxnq0GyfIlp7KS5sUGNrOp9OeRGUHO1nca3sDIW/fSJJlk48NKc/298Df/ZQX3bYkU0DTayRCpj7nZ/GH6trCDlUm7tpdphQd0++vn271sCcRp5aCmIPS8opSwZ9W1B1KuBrgGhxbpckCCboNoLbxYcVMISNDMxnypBKgE4pR+p8Abjt256+ZGm2mlDy4cADPUbKi3gxSFc7IljK5zkNfzBkODAeqYBfVCGelOm2GOp7tgFHJZb+Xus1FgkzcSqZ6qqq3T8eA0/z+5Ha+gPOy5p+bAsyfO7UnO15MGpZ0uAbmTeaTXxiyNL2BxRnRQNlqlTKGJ5aYPUu1gc8G3hlPfgYX3srAZBCgAeQVjA+ljuoPlclfSHjZmSuunpfhAsmssHtI=
+    - secure: Lr/wWhxcLdCLijxll0ztfZY66BDaD0S6BG5qx7DHLCCh2CRxVarQB/5TBiRYbSqOOkOYLSTGtNUP+izyKXJcdq9ywBO9QdGFRVAYqwNBh9mJgz3C0aKWhpebD59gaCWLo6976zXAuAOuhpt6HKIRxObI+eMMNQ4Vq67fuzlSHgFYmGr53excN5x9WmK8f3OEemo3pDh9ctnVqfRrEpNutZzL0UU3OPk4yhw681p7cP4dF5uzthNr9pPzqr92yu7/OjA8MZgngv5c8avPU9Z0Y9heOkPtVt/q4WIpLiH7S/4iJQ+jQArGre/e/J7nhf7UBkKXzkNotTg/O7vGPWVScrsi/2B68FJDC7Mt8kvgRq4MEG9pjSoA6lxXsxUllie5JfwMk3Gy6cBlcMODd+jQIQixK4zfjX7c20kaX8cS0TInnSIwumrEoGdhFwpQs90Kr0XGp+0FWPD7njA96HjD56qEFIpDxj6l32TncMqYKs9poexeS4rlt+3N3zxwutQ4vMbgDFIEQZ88Vhft29UZHmyRwOWN134Y01i52yg1y2QfQQaivsXJ+Bh9pue3AHsRHId87YBVw4m0YhU0LDyzg1XuiK8HnMgMmJepAFhk+JhrodDWbKwoQjTcqljnm+BbPr2w57pr4eUon7wG9MHNL+3Uz/1uoyLYZmNeWTb1oJU=
 branches:
   only:
     - master
-
 notifications:
   slack:
     secure: zeLxHE+z8RXsge7imwHbv4HuqpsMWlnvDXovlZH3iQW//6TrsgYT4arEp/NDV6jTYtMgLWmm4ou2nLu+AaYLmXIkp4Pt8z0xKnx8NPT8UsZn7f6gqK7Abah4YnrB4uHwnVzzVNlb0jmjWClVCNxR73GI+324pnxOjOSP4In8iCwX+fm9yKAhlaE1VMTVsjE2oTl+ECECmG4fWmDthg1gb6edLquUX04fhc0gDBmQ4c0mxoBSfhAI3eV22IehOiRMBwElPAcfZ0bWDK19AniGfYeyWYX+a1v4Mxy880oxsFIeCqJBQTw7j0DslF0VoZeJw2GTsecC2FTB9JiYX24wy/hCsAtwIZB/JX4znx5CsyDbKpvL1bcfKLg0MuBbZAkqFLS6K0pppgMd1McH2Og+ZTZyIogbWtW4Hvvgn9fNoU3RosxM3xwRcI560DjGdEKjuZikxC5mcuMuiNKR7rFNL8wA5beHc+yNBoF2VHuuJOG4zTgG0FOfdn4Chd9b+NN23Jhdny0WwCOfFneVfOkgkAvlvtN73YImlKHYBb3rE9/+lqAuwxmpYumKrkOFt95WW4vEBW2mUi4txYNK8uuTVA7CM+/h8mkAcgX9f0uES+fRA5/vegPnZuRVcnGhgLEQZ4EgYts0jJtYI+RzPuSMiMDA2R/Prgq/SvPhTmBwWxE=
     on_failure: always
     on_success: never
-
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
 cache:
   directories:
-    - $HOME/.gradle/caches/
-    - $HOME/.gradle/wrapper/
+    - "$HOME/.gradle/caches/"
+    - "$HOME/.gradle/wrapper/"
+after_script:
+  - if [ "$TRAVIS_BRANCH" = "master" && "$TRAVIS_PULL_REQUEST" == "false" ];
+    then echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin;
+    docker build -t fwmtresourcesvc --build-arg jar=build/libs/fwmt-resource-service-1.0.0.jar .;
+    docker tag fwmtresourcesvc sdcplatform/fwmtresourcesvc:$TRAVIS_BUILD_NUMBER;
+    docker push sdcplatform/fwmtresourcesvc;
+    fi
