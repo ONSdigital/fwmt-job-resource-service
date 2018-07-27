@@ -4,9 +4,10 @@ import org.springframework.web.multipart.MultipartFile;
 import uk.gov.ons.fwmt.resource_service.entity.JobFileEntity;
 
 import java.io.IOException;
+import java.util.Optional;
 
 public interface JobFileService {
-  JobFileEntity getJobFileByName(String filename);
+  Optional<JobFileEntity> getJobFileByName(String filename);
 
   JobFileEntity storeJobFile(MultipartFile file, boolean validated) throws IOException;
 }
