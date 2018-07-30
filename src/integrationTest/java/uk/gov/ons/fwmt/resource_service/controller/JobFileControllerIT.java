@@ -54,9 +54,9 @@ public class JobFileControllerIT {
     public void getJobFileByfileNameShouldReturnOkIfSucessful() throws Exception {
         JobFileEntity jobFileEntity = new JobFileEntity();
         jobFileEntity.setFile(new byte[10]);
-        jobFileEntity.setFilename("fileTest");
+        jobFileEntity.setFilename("fileTest.csv");
         jobFileEntityRepo.save(jobFileEntity);
-        mockMvc.perform(get("/jobFile/fileTest").with(httpBasic("user", "password"))).andExpect(status().isOk());
+        mockMvc.perform(get("/jobFile/fileTest.csv").with(httpBasic("user", "password"))).andExpect(status().isOk());
     }
 
     @Test

@@ -35,7 +35,7 @@ public class JobFileController {
 
   }
 
-  @GetMapping(value = "/{fileName}")
+  @GetMapping(value = "/{fileName:.+}")
   public ResponseEntity<Resource> getJobFileByfileName(@PathVariable("fileName") String fileName) {
     final Optional<JobFileEntity> jobFileEntityOptional = jobFileService.getJobFileByName(fileName);
     if(jobFileEntityOptional.isPresent()) {
