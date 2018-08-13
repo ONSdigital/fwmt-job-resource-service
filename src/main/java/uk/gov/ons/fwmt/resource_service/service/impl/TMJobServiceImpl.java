@@ -34,6 +34,7 @@ public class TMJobServiceImpl implements TMJobService {
     if (jobToUpdate == null) {
       return null;
     }
+    jobToUpdate.setLastUpdated(job.getLastUpdated());
     jobToUpdate.setLastAuthNo(job.getLastAuthNo());
     return tmJobRepo.save(jobToUpdate);
   }
