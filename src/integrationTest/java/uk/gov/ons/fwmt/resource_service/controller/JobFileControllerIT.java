@@ -16,6 +16,7 @@ import uk.gov.ons.fwmt.resource_service.repo.JobFileEntityRepo;
 
 import java.io.FileInputStream;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -45,7 +46,7 @@ public class JobFileControllerIT {
         MockMvcRequestBuilders.fileUpload("/jobFile/upload").file(multipartFile).param("validated", "true").with(httpBasic("user", "password")))
         .andExpect(status().isCreated());
 
-    final Optional<JobFileEntity> jobFileEntity = jobFileEntityRepo.findByfilename(filename);
+    final Optional<JobFileEntity> jobFileEntity = jobFileEntityRepo.findFirstByfilename(filename);
     assertThat(jobFileEntity.get().getFileTime(), is(LocalDateTime.of(2018, 06, 28, 16, 00, 00)));
     assertThat(jobFileEntity.get().isValidated(), is(true));
   }
@@ -57,6 +58,21 @@ public class JobFileControllerIT {
         jobFileEntity.setFilename("fileTest.csv");
         jobFileEntityRepo.save(jobFileEntity);
         mockMvc.perform(get("/jobFile/fileTest.csv").with(httpBasic("user", "password"))).andExpect(status().isOk());
+    }
+
+    @Test
+    public void getJobFileByfileNameMultipleFileWithSameNameShouldReturnOkIfSucessful() throws Exception {
+      JobFileEntity jobFileEntity = new JobFileEntity();
+      jobFileEntity.setFile(new byte[10]);
+      jobFileEntity.setFilename("fileTest.csv");
+      JobFileEntity jobFileEntity2 = new JobFileEntity();
+      jobFileEntity2.setFile(new byte[10]);
+      jobFileEntity2.setFilename("fileTest.csv");
+      jobFileEntityRepo.save(jobFileEntity);
+      jobFileEntityRepo.save(jobFileEntity2);
+      final List<JobFileEntity> all = jobFileEntityRepo.findAll();
+      assertThat(all.size(), is(2));
+      mockMvc.perform(get("/jobFile/fileTest.csv").with(httpBasic("user", "password"))).andExpect(status().isOk());
     }
 
     @Test
