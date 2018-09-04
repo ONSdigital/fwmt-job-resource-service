@@ -6,5 +6,5 @@ import uk.gov.ons.fwmt.resource_service.entity.JobFileEntity;
 import java.util.Optional;
 
 public interface JobFileEntityRepo extends JpaRepository<JobFileEntity, Long> {
-  Optional<JobFileEntity> findByfilename(String filename);
+  Optional<JobFileEntity> findFirstByfilename(String filename);
 }

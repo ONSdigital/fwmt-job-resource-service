@@ -22,7 +22,7 @@ public class JobFileServiceImpl implements JobFileService {
   @Autowired private JobFileEntityRepo jobFileEntityRepo;
 
   @Override public Optional<JobFileEntity> getJobFileByName(String filename) {
-    final Optional<JobFileEntity> jobFile = jobFileEntityRepo.findByfilename(filename);
+    final Optional<JobFileEntity> jobFile = jobFileEntityRepo.findFirstByfilename(filename);
     return jobFile;
   }
 
