@@ -170,3 +170,12 @@ databaseChangeLog:
           path: 19_Add_last_updated_to_jobs.sql
           relativeToChangelogFile: true
           splitStatements: false
+ - changeSet:
+     id: v20
+     author: Gareth Turner
+     comment: add GFF Field Periods for first 6 months of 2019
+     changes:
+     - sqlFile:
+         path: 20_Add_2019_First_6_months_GFF_Field_Periods.sql
+         relativeToChangelogFile: true
+         splitStatements: false
