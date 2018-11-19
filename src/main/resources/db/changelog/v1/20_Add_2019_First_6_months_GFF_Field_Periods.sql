@@ -1,0 +1,12 @@
+INSERT INTO gateway.field_periods (field_period,start_date,end_date) VALUES ('901','2019-1-1','2019-1-31');
+INSERT INTO gateway.field_periods (field_period,start_date,end_date) VALUES ('902','2019-2-1','2019-2-28');
+INSERT INTO gateway.field_periods (field_period,start_date,end_date) VALUES ('903','2019-3-1','2019-3-31');
+INSERT INTO gateway.field_periods (field_period,start_date,end_date) VALUES ('904','2019-4-1','2019-4-30');
+INSERT INTO gateway.field_periods (field_period,start_date,end_date) VALUES ('905','2019-5-1','2019-5-31');
+INSERT INTO gateway.field_periods (field_period,start_date,end_date) VALUES ('906','2019-6-1','2019-6-30');
+INSERT INTO gateway.field_periods (field_period,start_date,end_date) VALUES ('921','2019-2-1','2019-2-28');
+INSERT INTO gateway.field_periods (field_period,start_date,end_date) VALUES ('922','2019-3-1','2019-3-31');
+INSERT INTO gateway.field_periods (field_period,start_date,end_date) VALUES ('923','2019-4-1','2019-4-30');
+INSERT INTO gateway.field_periods (field_period,start_date,end_date) VALUES ('924','2019-5-1','2019-5-31');
+INSERT INTO gateway.field_periods (field_period,start_date,end_date) VALUES ('925','2019-6-1','2019-6-30');
+INSERT INTO gateway.field_periods (field_period,start_date,end_date) VALUES ('926','2019-7-1','2019-7-31');

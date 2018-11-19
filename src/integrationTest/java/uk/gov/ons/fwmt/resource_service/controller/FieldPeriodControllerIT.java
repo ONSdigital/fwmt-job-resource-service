@@ -82,7 +82,7 @@ public class FieldPeriodControllerIT {
   @Test
   public void getAllFieldPeriodsIT() throws Exception {
     mockMvc.perform(get("/fieldPeriods").with(httpBasic("user", "password"))).andExpect(
-        jsonPath("$", hasSize(130)));//if more fieldPeriods are added through liquibase this number will need updated
+        jsonPath("$", hasSize(142)));//if more fieldPeriods are added through liquibase this number will need updated
   }
 
   @Test
